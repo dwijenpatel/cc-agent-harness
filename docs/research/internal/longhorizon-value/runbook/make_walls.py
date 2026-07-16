@@ -61,7 +61,15 @@ def main():
             print(f"skip (no repo): {repo}")
             continue
         siblings = [os.path.join(REPOS, a) for a in ARMS if a != arm]
-        walls = [SLICE2, H_HELDOUT, OUTRIGGER] + siblings
+        walls = [SLICE2, OUTRIGGER] + siblings
+        # Arm H's repo must NOT wall its own held-out root: the exec-loop
+        # places implementer WORKTREES under it, and the checked-in walls ride
+        # into every worktree — the rule denied workers shell reads of their
+        # own tree (live failure 2026-07-16, fixed in arm-H commit 56f4aef).
+        # H's own-suite confinement is the loop's per-spawn deny_read; N/F
+        # keep the H-heldout wall (their sessions never run under it).
+        if arm != "eaitl-arm-H":
+            walls.append(H_HELDOUT)
         path, changed = write_settings(repo, rules(walls))
         if changed:
             subprocess.run(["git", "-C", repo, "add", ".claude/settings.json"],

@@ -53,7 +53,8 @@ keep/discard/**crash** — logged to an auditable ledger. Broken, as observed in
   of selections. Textbook meta-overfitting to a fixed evaluator, at 91k-star scale.
 - **Honor-system immutability.** Nothing technically prevents editing `prepare.py`; the guard is
   an instruction plus "run with permissions disabled." The corpus's STOP entry (warnings
-  ineffective, 0.42%→0.46%) says exactly why this is not a control.
+  failed to reduce sandbox-disabling: 0.42%→0.46% of 10,000, within noise) says exactly why
+  this is not a control.
 - **Non-reproducing keeps.** GPU nondeterminism means single-run keep/discard decisions absorb
   noise; secondary analysis reports kept ideas that did not reproduce.
 - **Goal drift.** Cerebras's independent write-up ("How to stop your autoresearch loop from
@@ -112,14 +113,20 @@ New since the 2026-07-09 pass:
   2511.02864 (2025-11-03; Georgiev, Gómez-Serrano, **Tao**, Wagner), with companion repo
   `google-deepmind/alphaevolve_repository_of_problems` — **67 problems, each bundling the exact
   prompt + verifier code + initial + evolved program** (the richest evaluator-contract corpus
-  anywhere), and a **live `status.json`** (at 2026-07-11: 19 current world records, 4 former —
-  since surpassed by third parties, 8 worse-than-record, 12 matched-optimal). Records are a
-  moving ledger, not a frozen trophy case; e.g. the 11-D kissing number (593) has reportedly
-  fallen to game-theoretic-RL work (594→604, arXiv 2511.13391).
+  anywhere), and a **live `status.json`** (2026-07-16 re-pull, unchanged from 07-11: 19
+  current world records, 4 former — since surpassed, 8 worse-than-record — never reached
+  the record, 12 matched-optimal; 43 of 67 categorized). Records are a moving ledger, not
+  a frozen trophy case — the `former` category exists because third parties overtake
+  entries. (An earlier edition of this bullet attributed "11-D kissing 594→604" to arXiv
+  2511.13391 — wrong: that paper improves dimensions 25–31 and cites 11-D at AlphaEvolve's
+  593; the 594 traces to EinsteinArena with no verified primary. Corrections ledger,
+  2026-07-16.)
 - **Differential trust, enacted `[E/I]`** — the community treats the two halves of the paper
   exactly as this corpus's method prescribes: the **machine-checkable math** is trusted and
-  built upon (matrix-mult decompositions re-verified by third parties; OpenEvolve reproduced
-  circle-packing n=26 within 0.04%), while the **Google-internal claims** (Borg 0.7% fleet
+  built upon (the 48-mult decomposition re-verified by independent parties; OpenEvolve — an
+  independent reimplementation — *self-reports* 2.6343 on circle-packing n=26, ≈0.04% below
+  AlphaEvolve's 2.635 and at the prior best-known level, later self-reports exceeding it,
+  none third-party verified), while the **Google-internal claims** (Borg 0.7% fleet
   recovery, Gemini-kernel 23%, FlashAttention 32%, TPU RTL) remain author-claimed and
   externally unverifiable. A real-world enactment of "single-source author-run results are
   unverified until independently confirmed" — flagged as a distillation candidate (framing).

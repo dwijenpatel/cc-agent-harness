@@ -306,6 +306,20 @@ Corrections produced by the fact-check passes, kept so future readers don't re-i
   without the schema caveat: all three are silent no-ops on current Claude Code (repo
   issue #2, confirmed by direct code study at `ad107a97`).
 
+- **Corrected 2026-07-16 (three-lens adversarial verification, run in the auto-research
+  corpus instance of the extracted evidence-kit — the corrections port back here per the
+  kit's flow rule):** (1) **kissing-number misattribution struck** — the auto-research
+  doc's "11-D 593 → 594→604 (arXiv 2511.13391)" was wrong: that paper improves dimensions
+  25–31 and cites 11-D at AlphaEvolve's 593; "594" traces to EinsteinArena with no
+  verified primary, "604" unsupported; (2) **OpenEvolve circle-packing reframed** — the
+  "reproduced within 0.04%" framing conflated OpenEvolve's *self-reported* 2.6343 (at the
+  prior best-known level, 0.04% below AlphaEvolve's 2.635, unverified by third parties)
+  with an independent verification; (3) **STOP direction claim corrected** — "rate rose /
+  slightly more frequent (0.42%→0.46%)" reads noise as signal (42 vs 46 of 10,000,
+  statistically indistinguishable); the against-interest *existence* point (warnings are
+  not a control) stands, now phrased "failed to reduce" in the gaming ledger,
+  distilled/external.md, and the grading method's teaching example.
+
 **Absence-of-feature findings** (strong, but inherently harder to prove than a positive): Kiro
 closure gate; Spec Kit automated final gate; LangGraph built-in critic; any published
 mutation-canary-calibration of an LLM review panel; a dedicated Claude Code quota CLI (issue

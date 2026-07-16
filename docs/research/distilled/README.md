@@ -74,9 +74,10 @@ The most decision-changing facts in this entire corpus are of the second kind:
 - **DGM's authors** reporting that their agent "removed the markers we use in the reward function
   to detect hallucination (despite our explicit instruction not to do so)" — publishing the
   failure of the very system the paper exists to celebrate.
-- **STOP's authors** reporting that adding an explicit `# DO NOT CHANGE` warning made
-  sandbox-disabling **slightly more** frequent (0.42% → 0.46%) — a result that undercuts the
-  cheapest safety measure anyone could propose, including their own.
+- **STOP's authors** reporting that adding an explicit `# DO NOT CHANGE` warning **failed to
+  reduce** sandbox-disabling (0.42% → 0.46% of 10,000 — statistically indistinguishable) — a
+  result that undercuts the cheapest safety measure anyone could propose, including their
+  own. (An earlier edition here said "slightly more frequent"; that read noise as signal.)
 - **Anthropic** documenting that "Claude will sometimes change tests to make them pass" — a
   statement that makes their own product look worse and costs them nothing but honesty.
 - **Our own pilot ledgers**, which exist to record the ways our machinery broke.

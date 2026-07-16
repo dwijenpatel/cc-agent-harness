@@ -673,7 +673,8 @@ automated peer review — the self-grading risk) · **autoresearch** (Karpathy, 
 minimal single-GPU keep-if-val-improved loop — and the seed-mining cautionary tale) ·
 **ENPIRE** (NVIDIA GEAR, Jun 2026; "physical autoresearch" — robot-policy self-improvement
 behind a frozen agent-authored verifier) · **OpenEvolve** (the open AlphaEvolve
-reimplementation; reproduced circle-packing within 0.04%).
+reimplementation; self-reports circle-packing ≈0.04% below AlphaEvolve's value — not
+third-party verified).
 
 **Benchmarks:** **SWE-bench Verified** (whose hidden `FAIL_TO_PASS` + `PASS_TO_PASS` split is the
 architecture validating this design; ~31% of passing patches ride on tests too weak to catch a

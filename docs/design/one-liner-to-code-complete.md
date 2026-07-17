@@ -1,7 +1,8 @@
 # One-liner → code-complete: the pipeline design
 
-**Status:** design plan, ready to implement — target home is a fresh repo (operator's
-call), with outrigger as the evidence base it cites. **Date:** 2026-07-17.
+**Status:** FROZEN capstone record (2026-07-17). The living copy — the design
+authority that evolves with its implementation — is `~/repos/one-punch`
+`docs/design/pipeline.md`; this copy stays as the experiment arc's closing record. **Date:** 2026-07-17.
 **Provenance:** closes the eaitl experiment arc. Every stage below either carries a
 measured number from that arc ([evidence appendix](#appendix-evidence-anchors)) or names
 the practice corpus it adopts (Claude Code built-ins, superpowers v6.1.1, the cowork

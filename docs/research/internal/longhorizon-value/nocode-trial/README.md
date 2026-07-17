@@ -29,12 +29,19 @@ the trial.
 ```sh
 mkdir ~/repos/eaitl-nocode && cd ~/repos/eaitl-nocode && git init
 cp ~/repos/eaitl/design-draft.md . && git add -A && git commit -m "seed"
-# optional but recommended: a CLAUDE.md with the conventions (stdlib-only, mypy --strict,
-# unittest) — the built-in reviewers enforce CLAUDE.md rules by quotation.
 
 python3 <outrigger>/docs/research/internal/longhorizon-value/nocode-trial/runner.py \
     --repo ~/repos/eaitl-nocode --plan design-draft.md --yes
 ```
+
+**Conventions are the planner's job, not a manual pre-step.** The planning session
+derives the project-wide conventions from the design doc and writes them to a root
+CLAUDE.md — because that is the surface the built-in review/simplify passes enforce
+against (their "Conventions" angle reads CLAUDE.md and flags violations by quotation; a
+convention that lives only in a task spec is *requested* of the implementer but never
+*enforced* by review). Whether the planner then chooses strict conventions — the design
+doc pins none — is itself a trial finding. To force a floor instead, commit your own
+CLAUDE.md in the seed step; the planner is told to write one only if absent.
 
 Defaults: implement = Sonnet 5 @ xhigh, review/simplify/escalate/plan = Opus 4.8 @ xhigh
 (effort via `CLAUDE_CODE_EFFORT_LEVEL`, model via `--model` — both per-session). Every

@@ -41,7 +41,17 @@ IMPLEMENT_PROMPT = (
 )
 PLAN_PROMPT = (
     "Read {plan}. Plan how to build it: break the work into however many "
-    "ordered, dependency-respecting tasks you judge right. For each task write "
+    "ordered, dependency-respecting tasks you judge right. "
+    "First, conventions: if a root CLAUDE.md already exists, treat its rules as "
+    "binding and do not overwrite it. Otherwise decide the project-wide "
+    "engineering conventions this build should hold to (language/runtime, "
+    "dependency policy, type-checking, test framework and layout, style) — "
+    "derive them from the design doc plus sound engineering defaults — and "
+    "write them to a root CLAUDE.md as concrete, quotable rules. Either way, "
+    "this file is loaded into every later session and is the surface the review "
+    "pass enforces against, so a convention that lives only in a task spec will "
+    "NOT be enforced — the enforceable rules must be in CLAUDE.md. "
+    "For each task write "
     "a self-contained spec under specs/ (a fresh session must be able to "
     "implement from the spec alone: exact module paths, signatures, consumed "
     "interfaces of prior tasks re-stated, error model, a worked example with "

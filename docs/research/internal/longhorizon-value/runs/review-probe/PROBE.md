@@ -39,3 +39,11 @@ spec-trap class. Review is a cheap widener for parity/robustness/design-gap clas
 (~$1/task at whole-chain scale). The pipeline needs BOTH: per-task review+fix, plus the
 independently TEST-AUTHORED end oracle. "Implement + review" alone would have shipped
 both spec-traps.
+
+## CORRECTION (2026-07-17) — see ../CORRECTIONS.md
+
+Cell 2's "verbatim-correct" on the pipeline confirm shape was a TRUE verification: all
+three arms extract the version string correctly; the nested expectation belonged to the
+slice-2 test itself, and the original PROBE verdict mis-attributed it. Cell 2's real miss
+is unchanged (the registry-seam). The complementary-instruments conclusion stands, now
+with review credited one true-verification the oracle got wrong.

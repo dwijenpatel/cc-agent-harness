@@ -5,7 +5,15 @@ description: Adversarial review of plan/spec PROSE before implementation — fin
 
 # plan-review — adversarial spec reading, pre-implementation
 
-`/plan-review [--fix] [plan artifacts…]`
+`/plan-review [--fix] [lean] [plan artifacts…]`
+
+**Tiers.** Default is the full shape below (3 translators + 4 angle finders +
+grouped verification). With `lean` in the arguments, run a reduced shape: **2
+translators + 2 merged finders** (seams+conventions as one agent, oracle-fitness+
+under-determination as the other) + grouped verification. Lean costs roughly half
+and is blunter — the 2-way translator diff exposes an 80/20 trap on ~32% of pair
+readings vs ~48% for 3-way. Use lean for small plans (≲8 specs), cheap early passes,
+or re-review after amendments; use the default when the plan gates real build spend.
 
 You are reviewing **plan prose, not code** — nothing under review executes. The target
 defect class: a spec sentence that admits two defensible readings. Whichever implementer
@@ -39,15 +47,22 @@ Launch all finders concurrently via the Agent tool. Every finder returns finding
 it). Drop findings without divergence pairs at collection.
 
 **Independent translators (×3) — the divergent-readings instrument.** Three agents,
-identical prompt, no shared context: *translate every normative sentence of every spec
-into concrete assertions (input → exact expected output), section by section, keyed by
-(file, contract point). Choose the reading you would implement. Do not flag ambiguity;
-just translate honestly.* Then diff the three translations key by key: any contract
-point where they disagree structurally (different shape, nesting, value, or behavior)
-is a candidate finding, and the disagreeing translations ARE its divergence pair. This
-catches what a single hunt-for-ambiguity pass misses: readers who misread a trap
-sentence each believe their reading is *the* reading — divergence is detected by
-comparing honest readings, never by asking one reader to doubt.
+identical prompt, no shared context: *translate the plan's **contract surfaces** into
+concrete assertions (input → exact expected output), section by section, keyed by
+(file, contract point). Contract surfaces are: public APIs and signatures, algorithms
+and their worked examples/goldens, wire/IR shapes, error models, and acceptance
+checks. Skip narrative, motivation, and background prose — translating it is the
+dominant token cost and (measured on the first live firing) produced zero findings.
+Choose the reading you would implement. Do not flag ambiguity; just translate
+honestly.* Then diff the three translations key by key: any contract point where they
+disagree structurally (different shape, nesting, value, or behavior) is a candidate
+finding, and the disagreeing translations ARE its divergence pair. This catches what a
+single hunt-for-ambiguity pass misses: readers who misread a trap sentence each
+believe their reading is *the* reading — divergence is detected by comparing honest
+readings, never by asking one reader to doubt. Three translators, not two, is
+deliberate: for a trap read the majority way ~80% of the time, a 2-way diff exposes
+divergence on ~32% of readings pairs while a 3-way exposes ~48% — the third reader
+buys recall, not just tie-breaks.
 
 **Cross-spec seam finder (×1).** For every interface one task provides and another
 consumes: does the consumer restate the interface (module path, signature, exact
@@ -78,10 +93,14 @@ prose ("unlike the other stages…") or it is a probable drafting error whose tw
 readings are "the pattern holds" vs "the break is intended". Also flag quiet
 deviations from the repo's CLAUDE.md conventions.
 
-## Phase 2 — Adversarial verify (parallel, one verifier per candidate)
+## Phase 2 — Adversarial verify (parallel, one verifier per location group)
 
-Each verifier receives one finding and is instructed to **refute** it: search the full
-plan and design doc for any sentence that pins one reading.
+Group candidates by (file, section) and launch one verifier per **group**, not per
+candidate — verifiers re-read the whole plan, so per-candidate fan-out pays that cost
+repeatedly for candidates that sit in the same section (measured: candidates cluster;
+grouping roughly halves this phase). Each verifier is instructed to **refute** its
+group's findings one by one: search the full plan and design doc for any sentence that
+pins one reading.
 
 - **REFUTED** — a sentence pins it; the verifier must QUOTE the pinning sentence.
   Anti-over-confirm: if a quoted sentence genuinely resolves the divergence, refute

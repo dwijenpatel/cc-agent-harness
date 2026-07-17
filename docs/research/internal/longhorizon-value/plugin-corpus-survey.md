@@ -177,8 +177,39 @@ Anthropic ever publishes these to the CLI marketplace.
 `/plan-review` (adversarial semantics) → execution loop (per-task implement+review+simplify)
 → independent end oracle. Each stage owns a defect class no other stage catches.
 
-## 7. Remaining / next steps
-- Superpowers' remaining skills (systematic-debugging, dispatching-parallel-agents,
-  writing-skills, receiving-code-review) read at skim depth only — deepen on demand.
-- The debugging/worktree/finishing skills likely carry more operational gems (the skim
-  showed the same evidence-first voice); budget a second pass if we adopt tier-1 or tier-2.
+## 7. Second reading pass — COMPLETED 2026-07-17
+
+The remaining superpowers skills, deep-read. New gems not captured above:
+
+- **The implementer contract** (implementer-prompt.md — the worker-side half of the
+  status contract): questions asked *before* starting AND freely during ("always OK to
+  pause; don't guess"); explicit **escalation psychology** — "It is always OK to stop and
+  say 'this is too hard for me.' Bad work is worse than no work. You will not be
+  penalized for escalating" and "Never silently produce work you're unsure about";
+  **TDD evidence in the report** (RED: command + failing output + why expected; GREEN:
+  command + passing output) so the reviewer never re-runs suites on trust; report file +
+  ≤15-line status message (detail lives in the file); self-review checklist before
+  reporting (completeness / quality / YAGNI discipline / tests-verify-behavior /
+  **pristine test output**); focused tests while iterating, full suite once before
+  commit (a real token/wall-clock economy).
+- **receiving-code-review**: verify feedback against codebase reality *before*
+  implementing; no performative agreement; and the batch rule — if ANY review item is
+  unclear, implement NOTHING ("items may be related; partial understanding = wrong
+  implementation"); push back with technical reasoning when the reviewer is wrong.
+- **test-driven-development**: the brutal version of the iron law — wrote production
+  code before its failing test? **Delete it and implement fresh from tests** ("don't
+  keep it as reference, don't adapt it, don't look at it"); "if you didn't watch the
+  test fail, you don't know it tests the right thing."
+- **systematic-debugging**: NO FIXES WITHOUT ROOT-CAUSE INVESTIGATION, four gated
+  phases, and the anti-pressure clause — use it "ESPECIALLY when under time pressure"
+  or after failed fix attempts. Directly applicable to our escalation path: a fresh
+  re-implementation after churn should carry a root-cause note, not just a retry.
+- **finishing-a-development-branch**: verify tests BEFORE presenting merge/PR options
+  (options withheld while red); structured terminal choices — the natural shape for the
+  attended merge gate.
+- using-git-worktrees / dispatching-parallel-agents / writing-skills: isolation and
+  parallel-track mechanics consistent with what we built (worktrees per worker;
+  parallelism only for independent tracks); writing-skills is authoring meta.
+
+Everything actionable from this pass is folded into the pipeline design:
+[one-liner-to-code-complete.md](../../../design/one-liner-to-code-complete.md).

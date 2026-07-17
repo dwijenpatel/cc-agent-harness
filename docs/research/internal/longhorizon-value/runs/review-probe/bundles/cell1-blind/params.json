@@ -1,0 +1,17 @@
+{
+  "contract": 1,
+  "role": "implementer",
+  "attempt": 1,
+  "worker": {
+    "tool": "claude",
+    "model": "claude-opus-4-8",
+    "effort": "xhigh"
+  },
+  "isolation": {
+    "deny_read": [],
+    "sandbox": true,
+    "network": true
+  },
+  "cwd": "/private/tmp/claude-501/-Users-dwijen-repos-outrigger/a4368f7e-5442-461b-9188-213fd09d4833/scratchpad/review-probe/repo",
+  "timeout_s": 3600
+}

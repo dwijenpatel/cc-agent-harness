@@ -376,6 +376,12 @@ class Runner:
         if self.args.plan_review and not self.ledger_has("plan-review-done"):
             print("=== plan-review (arm B)", flush=True)
             self.plan_review()
+        if self.args.stop_after_plan_review:
+            print("PLAN-REVIEW COMPLETE — report + any spec amendments are "
+                  "committed; re-run without --stop-after-plan-review to "
+                  "build.", flush=True)
+            print(self.spend_summary(), flush=True)
+            return
 
         done = self.done_tasks()
         chain_base = self.plan_base()
@@ -435,6 +441,9 @@ def main():
     ap.add_argument("--plan-review", action="store_true",
                     help="arm B: run /plan-review --fix on the specs before "
                          "any implementation")
+    ap.add_argument("--stop-after-plan-review", action="store_true",
+                    help="halt once the plan-review stage has committed its "
+                         "report + amendments (inspect before building)")
     ap.add_argument("--plan-review-skill", default=SKILL_SRC_DEFAULT,
                     help="dir of the canonical plan-review skill to install")
     ap.add_argument("--implement-model", default="claude-sonnet-5")

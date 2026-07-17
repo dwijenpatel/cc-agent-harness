@@ -50,7 +50,12 @@ arm A's only by the spec amendments + `plan-review-report.md`. The runner halts 
 session leaves no report file — the silent-no-op guard: an unresolved slash command
 answers "Unknown command" and exits 0 having done nothing (the review-probe's measured
 failure mode). Run the arms serially for clean wall-clock telemetry. Arm B adds one
-review-model session, ~$3–8.
+review-model session — **measured live 2026-07-16 at 15-spec scale: $23.87 / 31.6 min**
+(Opus xhigh; 7 finders + per-candidate verifiers scale with spec count — the original
+~$3–8 guess was 3× low). First live firing: 10 confirmed findings (9 auto-applied, 1
+correctly flagged-not-applied as a design-owner payload decision), incl. the plan's
+worked-example oracle being unreachable by the synthesis algorithm as written; one known
+recall miss (an unpinned optional-field divergence both arm-A reviewers had flagged).
 
 **Measurement at grading time** (decided then, like oracle granularity): grade both
 end-states against independently authored suites; the sharp causal readout is whether
@@ -93,7 +98,8 @@ simplify-revert flags.
 
 Estimated spend at eaitl scale (~10 tasks the planner will likely choose): plan ~$3-5;
 per task ~$5-12 (implement + 1-2 review passes with subagent fan-out + simplify);
-closure review ~$5-10 → **~$60-130 total** (+~$3-8 once for a `--plan-review` arm).
+closure review ~$5-10 → **~$60-130 total** (+$24 measured once for a `--plan-review`
+arm at 15-spec scale).
 Note plainly: review-heavy is not cheap —
 the difference vs the gated harness is where the money goes (applied, validated fixes
 vs hidden-test gates), not that it's free.

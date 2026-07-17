@@ -157,6 +157,18 @@ class Runner:
                     return True
         return False
 
+    def plan_base(self):
+        """Base sha for the closure whole-diff review: the post-plan sha from
+        the ledger, so a RESUMED run's closure still spans every task instead
+        of only the tasks after the halt."""
+        base = None
+        if os.path.exists(self.ledger_path):
+            for line in open(self.ledger_path, encoding="utf-8"):
+                r = json.loads(line)
+                if r.get("stage") == "planned":
+                    base = r.get("sha")
+        return base or head(self.repo)
+
     def claude(self, label, prompt, model, effort):
         """One fresh headless session. Only exit code and git state are used
         for control flow; the full JSON result (incl. usage) is archived.
@@ -366,7 +378,7 @@ class Runner:
             self.plan_review()
 
         done = self.done_tasks()
-        chain_base = head(self.repo)
+        chain_base = self.plan_base()
         for t in tasks:
             if t["id"] in done:
                 print(f"  == skip (done): {t['id']}", flush=True)

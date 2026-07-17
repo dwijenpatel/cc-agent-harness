@@ -1,0 +1,22 @@
+Committed and the tree is clean. Here's what I delivered.
+
+## Summary
+
+Added the **deterministic mapping matcher** as `eaitl/match.py`, exporting `propose_mappings(...)` and `MatchError`, wired into `eaitl/__init__.py` (the two export lines are the only edit to an existing file).
+
+**The matching ladder** — per target field, in target-schema order; first lane yielding a *unique* proposal wins; any tie or inconsistency falls through; unresolved targets are omitted:
+1. **Exact normalized name** (lowercase + drop non-alphanumerics)
+2. **Unique containment** (normalized names, either direction)
+3. **Example-driven** (only with `target_examples`): fixed-set ratio `{10,100,1000}` → `divide`; two-field constant-separator `concat`; distinguishing `equals` for bool targets (requires both a true and a false example); `to_date` extraction (verified against the engine's actual `to_date`)
+4. **Unique type compatibility** (same type / `timestamp`→`date` / `int`↔`float`) when it's the only unmapped target of its type
+
+Op selection follows the pinned type rules; a bool target from a non-bool source is never proposable outside lane 3 (the engine has no bool cast).
+
+**Verified:**
+- The pinned worked example returns the exact IR, **with and without** `target_examples`.
+- Every output passes `validate_ir` with zero problems, and the with-examples plan resolves on the engine to reproduce `target_examples` byte-for-byte.
+- All boundary cases hold (empty samples, zero-field target, identically-normalizing distinct names tie rather than being fatal, extra keys ignored), and all fatal-input cases raise `MatchError`.
+- `python3 -m mypy --strict eaitl` → clean (11 files).
+- `python3 -m unittest discover -s tests -t .` → **242 tests pass** (188 pre-existing + 54 new in `tests/test_match.py`), covering each lane in isolation, every skip rule, the no-examples fallbacks, determinism, and input non-mutation.
+
+Committed as `bd655d6`.

@@ -1,0 +1,24 @@
+The commit landed cleanly and the working tree is clean. 
+
+## Summary
+
+I implemented the TypeScript backend `compile_ts(ir) -> str` for the `eaitl` mapping-plan compiler.
+
+**Files:**
+- **`eaitl/compile_ts.py`** (new) — the compiler. A fixed TypeScript template (types, value-model helpers, ops, embedded SHA-256/UTF-8, driver) as raw strings, plus plan-specific baked sections (`OutputRow` type, `MAPPINGS`, `FILTERS`).
+- **`eaitl/__init__.py`** — the only edit to existing files: two lines adding the `compile_ts` export.
+- **`tests/test_compile_ts.py`** (new) — 70 tests.
+
+**What the generated module guarantees:**
+- **Zero imports/dependencies** — embeds its own SHA-256 and UTF-8 encoder; hashes are differentially confirmed equal to Python `hashlib`.
+- **Erasable syntax only** — passes the pinned `tsc --strict --noEmit --target es2022 --module es2022 --moduleResolution bundler` gate (verified, exit 0) *and* runs unmodified under node v24 native `.mts` type stripping (verified).
+- **Exported surface exactly** `Row` / `TransformError` / `OutputRow` / `transform`, with `OutputRow` op-derived (the worked example produces the spec's exact `{ id: unknown; customer_name: string | null; ... }`).
+- **Python semantics reproduced by hand** where JS/TS diverge: Python equality (`true == 1`, `1 == 1.0`, `'1' != 1`), cross-type ordering errors, divide-by-zero as an error record (never NaN), Python `int()`/`float()` string casts (`"25.5"` is an error, not `25`), textual `to_date` with no timezone conversion, `concat` null→`""`, and Python truthiness in filters (empty `[]`/`{}` are falsy).
+
+**Verification:**
+- Differential harness (compile → temp `.mts` → tsc gate → node → JSON-compare vs `apply_ir`) passes every named edge, including list/dict ordering and unicode hashing.
+- `python3 -m mypy --strict eaitl` — clean.
+- `python3 -m unittest discover -s tests -t .` — 361 tests pass (291 pre-existing + 70 new).
+- Determinism (byte-identical) and structural-error/`MappingError` parity confirmed.
+
+The one apparent divergence during development — `cast "inf" → float` — is **exclusion 3** (non-finite results; JSON can't carry them): the module computes `Infinity` internally, matching Python, but neither side is in the guaranteed domain there.

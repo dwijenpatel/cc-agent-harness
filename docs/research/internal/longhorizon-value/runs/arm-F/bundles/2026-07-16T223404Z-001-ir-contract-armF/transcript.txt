@@ -1,0 +1,19 @@
+Done. The `ir-contract` task is implemented, verified, and committed.
+
+## What I built
+
+**`eaitl/validate.py`** — a standalone `validate_ir(ir: object) -> list[dict[str, str]]`:
+- Returns a list of problems (empty = well-formed); **never raises**.
+- **Fatal short-circuit**: `not_an_object` and `mappings_missing` return alone; otherwise every problem across mappings, filters, validations, and source/target is collected.
+- Reads operation *names* from the live `eaitl.ops.OP_REGISTRY`; keeps its own `ARG_COUNTS` arity table (min/max per op, `concat` unbounded).
+- **Stricter than the engine on exactly three points**: `duplicate_target_field`, `wrong_argument_count`, `non_predicate_filter`. Never requires `source`/`target`, never flags unknown/proposer-only keys, never checks column existence.
+- Grounded design call: `non_predicate_filter` fires only for *registry-known* non-predicate ops (an unknown op yields `unknown_op` instead) — matching the spec's "the engine tolerates all three at runtime," which only applies to ops that actually run.
+
+**`eaitl/__init__.py`** — the single existing-file edit: adds `validate_ir` to the imports and `__all__`. Engine/ops/parser/model/resolve/errors are byte-for-byte unchanged.
+
+**`tests/test_validate.py`** — 55 tests covering every code, all edge behaviors from the spec (the three `not_an_object` inputs, empty mappings, three-wrong-count → three problems), and the required **key-parity assertion** that `set(ARG_COUNTS) == set(OP_REGISTRY)` so a new engine op without a count entry fails loudly.
+
+## Verification
+- `python3 -m mypy --strict eaitl` → **Success: no issues found in 8 source files**
+- `python3 -m unittest discover -s tests -t .` → **90 tests OK** (35 baseline engine tests still pass + 55 new)
+- Committed to `main` as `b669334`.

@@ -1,0 +1,23 @@
+Done. Committed as `f84b1ce`.
+
+## What I built
+
+**`eaitl/preview.py`** — one function, pure composition of two ratified components:
+
+```python
+def run_preview(text: str, fmt: str, ir: dict[str, Any]) -> dict[str, Any]:
+    samples = introspect_source(text, fmt)["samples"]
+    output_rows, errors = apply_ir(ir, samples)
+    return {"preview_rows": output_rows, "errors": errors}
+```
+
+The seam is the whole value: raw source text in → previewed output rows out. It re-implements, filters, and augments *nothing* — `IntrospectError` and `MappingError` propagate unchanged, per-row failures come back in `"errors"` exactly as `apply_ir` produced them, and the result has exactly two keys (no schema — that's available by calling introspection directly). Bounded by construction via introspection's 10-row `samples` cap.
+
+**`eaitl/__init__.py`** — the only edit to existing files: two lines exporting `run_preview`.
+
+**`tests/test_preview.py`** — the differential is central: `run_preview == introspect_source-then-apply_ir` by hand for JSON, CSV, and filter cases. Plus the spec's exact worked-example literal, reuse of the engine's ratified oracle fixture, the ≤10-row bound ("previewing 1000 rows == previewing the first 10"), the divide-by-zero per-row pass-through, the two-key return shape, and every fatal pass-through (unknown fmt, unparseable/non-array JSON → `IntrospectError`; bad plan / unknown op → `MappingError`; introspection fires before the engine).
+
+## Checks (all clean)
+- `python3 -m mypy --strict eaitl` → **Success: no issues found in 14 source files**
+- `python3 -m unittest discover -s tests -t .` → **376 tests, OK** (existing tests untouched and passing)
+- New test file also mypy `--strict` clean.

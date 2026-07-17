@@ -1,0 +1,18 @@
+Done. Committed as `913d053`.
+
+## What I built
+
+**`eaitl/validations.py`** — one public pure function `validate_output(ir, rows) -> list[dict]` that runs a plan's `validations` block against already-produced output rows and returns row-major violation records with exactly `{row_index, field, kind, reason}`.
+
+**Structural vs. data split** (mirrors `apply_ir`): malformed `validations` (non-dict `ir`, non-list `validations`, bad entry, missing/unknown `kind`, non-string `field`, missing/invalid `expected`) or a non-dict row raise the engine's existing `MappingError` (imported, never redefined) with parser-style located messages like `validations[1] missing field`. Values inside rows never raise.
+
+**Semantics, exactly as pinned:**
+- `not_null` fails on absent key **or** `None`; fails loudly on every row when it names an unmapped field.
+- `type_check` — strict runtime match over `{string, int, float, bool}`: bool never passes int, int never passes float, `nan` passes float; **null skips** (nullability is `not_null`'s jurisdiction alone); **absent field fails** with `"missing"`.
+- Vacuous rules: `validations` absent/`[]` → `[]` (rows never inspected); zero rows → `[]`; duplicates both report; unknown extra keys ignored.
+
+**Design choices worth flagging:**
+- The four-type vocabulary is **defined locally** in `validations.py`, not imported, with a **drift test** asserting equality with `validate._EXPECTED_TYPES`/`_VALIDATION_KINDS`. This follows the codebase's own ratified pattern (`ARG_COUNTS`↔`OP_REGISTRY`, test_validate.py:371) and avoids a latent coupling hazard: importing would let a future `validate.py` change silently feed this executor a kind/type it has no code path for.
+- Used a `_NotNull | _TypeCheck` dataclass union (mirroring `model.py`'s `ArgSpec`) so `type_check`'s `expected` is statically non-null — no asserts, no dead branches.
+
+**Verification:** `mypy --strict eaitl` clean (10 files); `python3 -m unittest discover` — all 188 tests pass (46 new, covering every worked example, semantic edge, ordering, and structural raise). Only existing-file change is the `validate_output` export in `__init__.py`; engine and prior tasks' files are byte-for-byte untouched.

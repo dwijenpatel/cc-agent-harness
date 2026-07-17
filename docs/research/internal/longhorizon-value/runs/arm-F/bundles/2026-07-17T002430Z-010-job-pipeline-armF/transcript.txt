@@ -1,0 +1,27 @@
+Done. The job pipeline is implemented, verified, and committed.
+
+## What was built
+
+**`eaitl/pipeline.py`** — `run_job(text, fmt, target_schema, target_examples=None) -> dict` — composes the six ratified stages into one pure, deterministic state machine:
+
+1. `introspect` → `introspect_source(text, fmt)` (full return)
+2. `propose` → `propose_mappings(schema, target_schema, samples, target_examples)` → `{"ir": ...}`
+3. `validate` → `validate_ir` first (non-empty → fails the stage with a code-and-location message via a private internal exception), then `validate_mappings(ir, target_schema)` → `{"warnings": ...}`
+4. `confirm` → `confirm_mapping(ir)` → `{"version": <64-hex>}`
+5. `compile` → `{"python": compile_python(ir), "typescript": compile_ts(ir)}` — both, always
+6. `preview` → `run_preview(text, fmt, ir)` (full return)
+
+A single try/except with a `current`-stage marker records each completed artifact and, on `IntrospectError`/`MatchError`/`MappingError`/validator-contradiction, returns `{status: "failed", failed_stage, error, stages}` holding **only the completed prefix**. Any other exception propagates. The only edit to an existing file is the `run_job` export in `eaitl/__init__.py`.
+
+## Verification (all pinned behavior holds)
+
+- **Worked example**: completes with all six stages; the exact five-mapping proposal; `warnings []`; **version = `ec4a652a…beb417`** (matches the pinned digest); compile output **byte-equal** to both ratified compilers; preview rows exactly the three target-example rows (`25.99 / 12.5 / 9.99`, `true/false/true`), `errors []`; JSON round-trips.
+- **No-examples variant**: three-mapping fallback; exactly two `unmapped_target` warnings (`customer_name`, `is_paid`, schema order); preview rows carry three keys each.
+- **Boundaries**: truncated JSON → failed at `introspect`, `stages {}`; `{"fields":"nope"}` → failed at `propose` (MatchError), `stages` holds `introspect` only; single-bool-no-examples → **completed** with empty mappings, frozen version, both compiles, empty-dict preview rows, and the omission visible as a warning.
+- **Determinism**: repeated calls (success and failure) produce equal records.
+
+## Checks
+
+- `python3 -m mypy --strict eaitl` → clean (17 files)
+- `python3 -m unittest discover -s tests -t .` → **448 passed** (424 pre-existing + 24 new in `tests/test_pipeline.py`)
+- Committed as `d0fee72`.

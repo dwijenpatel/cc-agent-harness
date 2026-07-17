@@ -1,0 +1,19 @@
+Done. Committed as `c157877`.
+
+## Summary
+
+Implemented the `mapping-freeze` task: a content-addressed version stamp for an approved plan.
+
+**New file `eaitl/freeze.py`** — exports `confirm_mapping(ir) -> {"version", "ir"}`:
+- `version` is the SHA-256 hex digest of the plan's **canonical JSON**: `json.dumps(ir, sort_keys=True, separators=(",", ":"), ensure_ascii=False)` encoded UTF-8 — pinned exactly.
+- Composes the ratified `validate_ir`: if it reports any problem, raises the engine's `MappingError` naming the first problem's code and location; otherwise returns the input plan unchanged (same object).
+- Pure — no I/O, no clock, no randomness, persists nothing.
+
+**Only existing-file edit** — `eaitl/__init__.py` gains the `confirm_mapping` import and `__all__` entry.
+
+**Tests `tests/test_freeze.py`** — the pinned worked-example digest, result shape / 64-char lowercase hex, input-returned-unchanged, key-order insensitivity, array-order sensitivity, extra-keys-are-content, the refuses-malformed raise (including message names code + location), idempotence, and re-confirmation-never-refused.
+
+**Verification:**
+- Pinned digest reproduced independently: `a4ae8a152df23d2b743a70fa8e91daae4699d6e9fe808c965274f8b0f0ad90fb` ✓
+- `python3 -m mypy --strict eaitl` → clean (15 files) ✓
+- `python3 -m unittest discover -s tests -t .` → 391 tests OK (existing suite still green) ✓

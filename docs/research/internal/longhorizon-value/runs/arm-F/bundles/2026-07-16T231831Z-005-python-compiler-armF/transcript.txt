@@ -1,0 +1,22 @@
+Done. The `python-compiler` task is implemented, verified, and committed.
+
+## What I built
+
+**`eaitl/compile_python.py`** — exports `compile_python(ir: dict[str, Any]) -> str`, returning the source text of a standalone, stdlib-only module whose `transform(rows)` is byte-for-byte identical to `apply_ir(ir, rows)`.
+
+**Key design decision (parity by construction):** rather than re-derive each op's semantics into unrolled code — where a rounding or timezone edge could quietly diverge — the generated module **transcribes the engine verbatim** (ops from `ops.py`, resolution from `resolve.py`, the row/filter driver from `engine.py`) and **bakes the plan in as `_MAPPINGS`/`_FILTERS` data constants**. Because it's literally the engine's algorithm running the engine's op functions, the total differential property — same output rows, same filtering, same error records *including reason strings* — follows structurally. Reason strings match automatically since the op functions raise the same exceptions with the same message templates.
+
+**Contract points honored:**
+- Structural errors raise the reused `MappingError` at compile time via `parse_ir` (never redefined); runtime-tolerated defects (wrong arity, duplicate targets) compile to engine-identical behavior.
+- Generated module never imports `eaitl`; pure (no I/O, clock, randomness, `eval`/`exec`); uses `hashlib`/`datetime`/`typing` only.
+- Deterministic: identical plan → byte-identical source.
+- Only edit to an existing file is the `compile_python` export line + `__all__` entry in `eaitl/__init__.py`.
+
+## Verification
+- `mypy --strict eaitl` → clean (12 files)
+- Full suite: **291 tests pass** (242 pre-existing + 49 new differential tests)
+- An **8000-case randomized fuzz** comparing the compiled module against `apply_ir` (random plans incl. wrong arity/duplicate targets, random rows) → **zero mismatches**; determinism and standalone/purity static checks pass
+- Every named edge (true division on negatives, `to_date` Z/offset without TZ conversion, `concat` null→`""`, cast/arithmetic bool asymmetry, comparison failures, `hash(None)`→digest of `"None"`, substring slice semantics, literal-vs-dynamic resolution, filters over the mapped row) is covered and pinned to exact expected values.
+- The worked-example draft scenario yields exactly the spec's expected row with no errors.
+
+Committed as `5f73316` on `main`.

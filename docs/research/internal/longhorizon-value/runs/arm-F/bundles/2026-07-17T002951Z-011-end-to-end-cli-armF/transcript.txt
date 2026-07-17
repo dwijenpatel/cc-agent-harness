@@ -1,0 +1,25 @@
+Done. The end-to-end CLI is implemented, verified, and committed.
+
+## What I built
+
+Three files (plus the single allowed edit to `eaitl/__init__.py`):
+
+- **`eaitl/cli.py`** — `main(argv=None) -> int`, a thin veneer over `run_job`: parse argv → derive `fmt` from the source extension → read exactly the 2–3 input files → create `--out` → one `run_job` call → write artifacts → print → exit. No transform/validation/policy logic lives here.
+- **`eaitl/__main__.py`** — `sys.exit(main())`, so `python3 -m eaitl run …` works.
+- **`eaitl/__init__.py`** — added `main` to the exports (the only existing-file edit).
+- **`tests/test_cli.py`** — 18 stdlib-`unittest` tests calling `main([...])` directly with temp dirs.
+
+## Key design points (matching the spec exactly)
+
+- **Exit-code boundary**: usage errors funnel through a `_UsageError` exception → stderr + exit 2, with `run_job` never called. A custom `ArgumentParser.error` override converts argparse failures into the same path (so `main` returns an int, never raises `SystemExit`). `--out` is created **last** among pre-flight steps, so a bad input never leaves a stray directory.
+- **Source read as raw text** even for `.json` — a truncated `.json` flows into the pipeline and fails at introspect (exit 1), not the CLI (exit 2). Only `target_schema`/`target_examples` are JSON-parsed by the CLI.
+- **Byte-deterministic writes** to `--out` only: `transform.py`/`transform.mts` (byte-exact compiler output, `newline=""`), `job.json` always (`json.dumps(..., indent=2, sort_keys=True, ensure_ascii=False)` + `\n`).
+- Paths printed as `<out>/…` joined with `/` exactly as given.
+
+## Verification
+
+- **mypy --strict**: clean across all 19 source files (including `__main__.py`).
+- **Full test suite**: 464 tests pass.
+- **End-to-end from real files** confirmed every spec boundary: the worked example prints the pinned block with digest `ec4a652a…beb417` (exit 0); no-examples → `warnings: 2` (exit 0); `data.txt` → exit 2, empty stdout, `out` never created; truncated JSON → exit 1, `stage: introspect`, only `job.json` written with `"stages": {}`.
+
+Committed as `01cb884` on `main` (following this task chain's established commit-to-main pattern).

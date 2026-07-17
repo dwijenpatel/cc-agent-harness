@@ -1,0 +1,22 @@
+Done. Committed as `0491f28`.
+
+## Summary
+
+Implemented the `policy-validation` task — advisory policy warnings over a well-formed plan.
+
+**Files:**
+- **`eaitl/policy.py`** (new) — `validate_mappings(ir, target_schema=None) -> list[dict[str, str]]`
+- **`eaitl/__init__.py`** (only existing-file edit) — added the `validate_mappings` export and `__all__` entry
+- **`tests/test_policy.py`** (new) — 33 stdlib-`unittest` tests
+
+**Behavior, pinned to spec:**
+- **`pii_unhashed`** — fires when a name token (split on non-alphanumerics, lowercased) of the `target_field` **or** any *dynamic string* argument (a bare column reference, not a `{"lit": ...}` literal) is in the pinned 10-token list; suppressed when the op is `hash`. Location `mappings[i]`.
+- **`non_deterministic_op`** — fires when a mapping's or filter's op is outside the pinned 17-op allowlist (`DETERMINISTIC_OPS`). Equal to the engine registry today, so inert; a test live-syncs `set(DETERMINISTIC_OPS) == set(OP_REGISTRY.keys())`, and a monkeypatch test proves it fires for a future registry op at `mappings[i].transform` / `filters[i]`.
+- **`unmapped_target`** — with `target_schema`, one warning per uncovered field in schema order (location `target_schema`); skipped without it.
+- **Raises** — runs `validate_ir` first and raises `MappingError` naming the first problem for a malformed plan; raises `MappingError` for a malformed `target_schema`. Warnings themselves never raise. Pure function.
+
+**Worked example verified exactly:** `copy(email_address)->email` + `copy(order_id)->id` with schema `email, id, region` yields exactly `[pii_unhashed@mappings[0], unmapped_target@target_schema]`; changing op to `hash` drops the first, omitting `target_schema` drops the second.
+
+**Checks:** `mypy --strict eaitl` → clean (16 files); full suite → 424 tests pass (33 new, all prior tests green).
+
+One design decision worth flagging: for the `target_schema` malformed check I validate structure (dict → `fields` list → each field an object with a string `name`) but stay lenient on `type` values, since the worked-example prose specifies fields by name only and the `unmapped_target` class needs only names — this keeps the anchor robust whether or not a test includes types.

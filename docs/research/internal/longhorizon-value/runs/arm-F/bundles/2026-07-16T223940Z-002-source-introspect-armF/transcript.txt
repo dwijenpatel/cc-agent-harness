@@ -1,0 +1,20 @@
+Done. Committed as `4d3de10`.
+
+## Summary
+
+Implemented source introspection per the spec in a new pure module, with the only existing-file change being the two export lines in `__init__.py`.
+
+**`eaitl/introspect.py`** — `introspect_source(text, fmt) -> dict[str, Any]` and `class IntrospectError(Exception)`:
+- **CSV**: strips one leading BOM, parses with stdlib `csv` defaults, header defines field names/order; raises `IntrospectError` on duplicate/empty header, ragged row, or zero data rows.
+- **JSON**: `json.loads` defaults (NaN/Infinity → float, duplicate keys keep last); requires a non-empty array of objects; field order = union of keys in first-seen order.
+- **Classification** (first-match-wins, on a whitespace-stripped copy): case-insensitive `true`/`false` only for bool; ASCII-only int/float with the leading-zero rule, no `+`, no scientific notation, no underscores; strict zero-padded `YYYY-MM-DD` date and `YYYY-MM-DDTHH:MM:SS[.ffffff][Z|±HH:MM]` timestamp, each validated as a real calendar moment. JSON-native `bool` is checked before `int` so `True` never reads as int; nested objects/arrays are opaque `string`.
+- **Column fold**: all-missing → `string`; single type → itself; `int`+`float` → `float`; any other mix → `string`.
+- **Samples**: first `min(10, rows)` rows, raw and uncoerced.
+
+**`tests/test_introspect.py`** — 30 test methods covering every worked example and edge in the spec (leading-zero, bool tokens, int/float promotion, date/timestamp boundaries, all structural errors, field ordering, samples, BOM, purity, NaN preservation).
+
+**Checks (all green):**
+- `python3 -m mypy --strict eaitl` → *Success: no issues found in 9 source files*
+- `python3 -m unittest discover -s tests -t .` → *Ran 148 tests… OK* (new suite + the pre-existing engine tests still pass)
+
+One thing worth flagging since it's an inherent CSV ambiguity: in a **single-column** CSV, an empty data value on its own line is a blank line, which the stdlib `csv` module yields as zero cells — that's a ragged row (0 ≠ 1 header cell) and is therefore fatal per the spec's cell-count definition. Empty cells are only representable (and correctly treated as *missing*) in multi-column rows like `1,,3`. The implementation follows the spec's literal cell-count rule here; I mention it in case downstream ever feeds genuinely single-column data with blanks.

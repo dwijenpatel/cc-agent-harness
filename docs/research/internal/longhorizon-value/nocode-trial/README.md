@@ -24,6 +24,35 @@ the trial.
 - `/simplify` is trust-but-verify: the runner re-runs the task's checks itself afterward;
   red → the simplify commit is reverted (noted on the ledger) and the run continues.
 
+## The plan-review A/B
+
+One planning session, forked into two arms; the only delta is one adversarial
+prose-review pass ([/plan-review](../../../../../.claude/skills/plan-review/SKILL.md))
+over the same specs before any implementation:
+
+```sh
+# plan once, halt at the fork point
+python3 runner.py --repo ~/repos/eaitl-nocode --plan design-draft.md --stop-after-plan --yes
+# fork — cp -R carries .runner/ (the ledger), so both arms resume from identical state
+cp -R ~/repos/eaitl-nocode ~/repos/eaitl-nocode-A
+cp -R ~/repos/eaitl-nocode ~/repos/eaitl-nocode-B
+# arm A: straight to implementation          # arm B: /plan-review --fix first
+python3 runner.py --repo ~/repos/eaitl-nocode-A --yes
+python3 runner.py --repo ~/repos/eaitl-nocode-B --plan-review --yes
+```
+
+Arm B installs the canonical skill (outrigger `.claude/skills/plan-review/`) into the
+trial repo for one session and uninstalls it after, so its task-phase tree differs from
+arm A's only by the spec amendments + `plan-review-report.md`. The runner halts if the
+session leaves no report file — the silent-no-op guard: an unresolved slash command
+answers "Unknown command" and exits 0 having done nothing (the review-probe's measured
+failure mode). Run the arms serially for clean wall-clock telemetry. Arm B adds one
+review-model session, ~$3–8.
+
+**Measurement at grading time** (decided then, like oracle granularity): grade both
+end-states against independently authored suites; the sharp causal readout is whether
+arm A's defects sit at the spec locations arm B's review flagged.
+
 ## Kickoff
 
 ```sh
@@ -54,7 +83,8 @@ simplify-revert flags.
 
 Estimated spend at eaitl scale (~10 tasks the planner will likely choose): plan ~$3-5;
 per task ~$5-12 (implement + 1-2 review passes with subagent fan-out + simplify);
-closure review ~$5-10 → **~$60-130 total**. Note plainly: review-heavy is not cheap —
+closure review ~$5-10 → **~$60-130 total** (+~$3-8 once for a `--plan-review` arm).
+Note plainly: review-heavy is not cheap —
 the difference vs the gated harness is where the money goes (applied, validated fixes
 vs hidden-test gates), not that it's free.
 

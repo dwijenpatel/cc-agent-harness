@@ -10,6 +10,13 @@ Pipeline:
   plan      one session reads the design doc, decides its own task breakdown,
             writes specs/ + tasks.json (the only structural demand we place),
             commits.
+  plan-review  (--plan-review, the A/B's arm B) one /plan-review --fix session
+            over the emitted specs before any implementation: adversarial
+            prose reading; confirmed divergent-reading findings are rewritten
+            into pins. The skill is installed for the session and uninstalled
+            after, so arm B's task-phase tree differs from arm A's ONLY by
+            the spec amendments + report. --stop-after-plan halts at the
+            post-plan fork point.
   per task  fresh implement session -> /code-review <effort> --fix
             (mechanical churn rule: pass leaves tree dirty = findings existed;
             runner commits them and reviews again; a 2nd dirty pass =
@@ -26,11 +33,18 @@ the run (exit 1) with state on the ledger; re-running skips completed tasks
 Usage:
   python3 runner.py --repo ~/repos/eaitl-nocode --plan design-draft.md --yes
   python3 runner.py --repo ... --skip-plan --yes        # manifest already exists
+
+Plan-review A/B (one plan, forked, the review pass is the only delta):
+  python3 runner.py --repo <seed> --plan design-draft.md --stop-after-plan --yes
+  cp -R <seed> <armA> && cp -R <seed> <armB>   # cp carries .runner/ (the ledger)
+  python3 runner.py --repo <armA> --yes
+  python3 runner.py --repo <armB> --plan-review --yes
 """
 import argparse
 import datetime
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -62,6 +76,13 @@ PLAN_PROMPT = (
     "the repo root. Ask no questions; make reasonable calls and record them "
     "in the specs. Commit everything when done."
 )
+
+
+# Canonical skill source: <outrigger>/.claude/skills/plan-review, five levels
+# up from this file. Overridable via --plan-review-skill.
+SKILL_SRC_DEFAULT = os.path.normpath(os.path.join(
+    os.path.dirname(os.path.abspath(__file__)),
+    "..", "..", "..", "..", "..", ".claude", "skills", "plan-review"))
 
 
 def sh(argv, cwd):
@@ -100,6 +121,18 @@ class Runner:
         self.rundir = os.path.join(self.repo, ".runner", ts)
         os.makedirs(self.rundir, exist_ok=True)
         self.ledger_path = os.path.join(self.repo, ".runner", "ledger.jsonl")
+        # .runner/ must stay invisible to git: sessions run `git add -A`
+        # (which would track the ledger) and the runner runs `reset --hard` /
+        # `clean -fd` (which would roll back or delete it once tracked).
+        # Resume-correctness and telemetry both ride on this exclusion.
+        gitdir = os.path.join(self.repo, ".git")
+        if os.path.isdir(gitdir):
+            exclude = os.path.join(gitdir, "info", "exclude")
+            os.makedirs(os.path.dirname(exclude), exist_ok=True)
+            if not (os.path.exists(exclude)
+                    and ".runner/" in open(exclude, encoding="utf-8").read()):
+                with open(exclude, "a", encoding="utf-8") as fh:
+                    fh.write(".runner/\n")
 
     def ledger(self, record):
         record["ts"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
@@ -116,6 +149,13 @@ class Runner:
                 if r.get("stage") == "task-done":
                     done.add(r["task"])
         return done
+
+    def ledger_has(self, stage):
+        if os.path.exists(self.ledger_path):
+            for line in open(self.ledger_path, encoding="utf-8"):
+                if json.loads(line).get("stage") == stage:
+                    return True
+        return False
 
     def claude(self, label, prompt, model, effort):
         """One fresh headless session. Only exit code and git state are used
@@ -198,6 +238,30 @@ class Runner:
             commit_all(self.repo, f"review-fix pass {n} ({task['id']})")
         return True
 
+    def plan_review(self):
+        """Arm B's one extra stage: /plan-review --fix over the emitted specs,
+        between planning and implementation. Install the skill only for this
+        session and uninstall after, so the task-phase tree differs from an
+        unreviewed arm only by the spec amendments + report."""
+        src = os.path.abspath(os.path.expanduser(self.args.plan_review_skill))
+        if not os.path.isdir(src):
+            raise Halt(f"--plan-review-skill dir not found: {src}")
+        dst = os.path.join(self.repo, ".claude", "skills", "plan-review")
+        shutil.copytree(src, dst, dirs_exist_ok=True)
+        self.commit_dirty("plan-review: install skill")
+        self.claude("plan-review",
+                    "/plan-review --fix tasks.json specs/ "
+                    f"(source design doc: {self.args.plan})",
+                    self.args.review_model, self.args.review_effort)
+        if not os.path.exists(os.path.join(self.repo, "plan-review-report.md")):
+            raise Halt("plan-review session wrote no plan-review-report.md — "
+                       "likely the skill did not resolve (an unknown slash "
+                       "command exits 0 having done nothing)")
+        self.commit_dirty("plan-review: apply confirmed disambiguations")
+        shutil.rmtree(dst)
+        self.commit_dirty("plan-review: uninstall skill")
+        self.ledger({"stage": "plan-review-done", "sha": head(self.repo)})
+
     def build_task(self, task):
         pre = head(self.repo)
         reset_clean(self.repo)
@@ -269,6 +333,16 @@ class Runner:
             if not os.path.exists(os.path.join(self.repo, t["spec"])):
                 raise Halt(f"manifest spec missing: {t['spec']}")
 
+        if self.args.stop_after_plan:
+            print("PLAN COMPLETE — manifest validated. This is the A/B fork "
+                  "point: cp -R the repo per arm, then re-run each without "
+                  "--stop-after-plan (arm B adds --plan-review).", flush=True)
+            print(self.spend_summary(), flush=True)
+            return
+        if self.args.plan_review and not self.ledger_has("plan-review-done"):
+            print("=== plan-review (arm B)", flush=True)
+            self.plan_review()
+
         done = self.done_tasks()
         chain_base = head(self.repo)
         for t in tasks:
@@ -322,6 +396,13 @@ def main():
     ap.add_argument("--repo", required=True)
     ap.add_argument("--plan", default="design-draft.md")
     ap.add_argument("--skip-plan", action="store_true")
+    ap.add_argument("--stop-after-plan", action="store_true",
+                    help="halt after the plan stage: the A/B fork point")
+    ap.add_argument("--plan-review", action="store_true",
+                    help="arm B: run /plan-review --fix on the specs before "
+                         "any implementation")
+    ap.add_argument("--plan-review-skill", default=SKILL_SRC_DEFAULT,
+                    help="dir of the canonical plan-review skill to install")
     ap.add_argument("--implement-model", default="claude-sonnet-5")
     ap.add_argument("--implement-effort", default="xhigh")
     ap.add_argument("--review-model", default="claude-opus-4-8")

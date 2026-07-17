@@ -313,6 +313,33 @@ measure the planted distribution, not the real one (M4). Experiment **T4**.
   ≤3–4), interview escapes per spec, blind-author failures-to-author, ledger challenge rate
   (never-challenged across many specs ⇒ the ledger is decoration — redesign trigger). Demotion
   trigger: escapes or author-failures rise under the compressed protocol.
+- **An adversarial plan-review pass before ratification (added 2026-07-16 — Provisional).**
+  The interview elicits decisions; the preflight checks structure; neither reads the spec
+  *prose* adversarially. The long-horizon value experiment measured why that gap matters: the
+  one genuine defect that shipped — identically in all three arms — was spec-level
+  under-determination (a cross-spec seam plus a trap sentence misread at ~1-in-5 per careful
+  reading), a class end-state code review missed in both probe cells (code consistent with its
+  author's reading looks correct), and one that poisons verification the same way (the
+  independent suite author misread the same specs: 6 defective tests, 2 false stops) — the
+  error-compounding mechanism (D16) operating at the spec layer, one ambiguous sentence
+  corrupting implementations and oracles at once
+  ([corrections record](../research/internal/longhorizon-value/runs/CORRECTIONS.md),
+  [probe record](../research/internal/longhorizon-value/runs/review-probe/PROBE.md)).
+  Countermeasure artifact: [/plan-review](../../.claude/skills/plan-review/SKILL.md) — the
+  vendor-validated find→verify→filter review architecture
+  ([artifact survey](../research/internal/longhorizon-value/claude-code-artifacts.md)) aimed
+  at plan prose, standalone per R5/D15 (vanilla Claude Code; plan files in, report file out).
+  Finder angles map one-to-one to observed failure classes: independent-translator diff
+  (readers reveal divergence by honest translation, never by self-doubt), cross-spec seams,
+  oracle-fitness of checks, observable under-determination, silent local-convention breaks.
+  The finding contract demands a concrete divergence pair — two defensible readings producing
+  two different observable outputs, with no pinning sentence anywhere — and claims without one
+  are dropped, carrying over the FP-suppression discipline the vendor's own artifacts treat as
+  the product risk; confirmed findings ship with pin+negative-example rewrites. *Provisional
+  because no external source measures adversarial pre-implementation prose review.* Promotion
+  trigger: the nocode A/B (one plan, forked; arm B reviewed; promote if review-confirmed
+  divergences surface as end-state defects in the unreviewed arm at the flagged locations).
+  Demotion trigger: FP-dominated reports (confirmed findings an audit refutes) or an A/B null.
 - Requirements templates are formatting, not completeness — EARS's own inventors say so (§2.3);
   a template cannot substitute for the interview.
 - **The planning machinery is a standalone artifact (R5/D15):** the interview + preflight run

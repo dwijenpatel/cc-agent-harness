@@ -180,6 +180,14 @@ completion promise to escape the loop.
 - `--effort <level>` is a real per-session CLI flag (launcher-verified on 2.1.207); the
   `CLAUDE_CODE_EFFORT_LEVEL` env var also exists (binary strings show it overriding
   sessions) but the flag is the verified path.
+- Headless `-p` sessions **deny every permission-gated tool by default** (Write/Edit/
+  Bash/Skill) and still **exit 0** — measured live 2026-07-16: the first nocode-trial
+  plan session ran 533s/$1.65/16 turns, produced *zero files*, and ended "grant write
+  access and I'll create all 15 files". Same silent-no-op class as the unknown-command
+  failure: success signals lie; only artifact-existence checks tell the truth. Denial
+  evidence is structured — `permission_denials` in the result JSON. Write-capable
+  automation must pass `--dangerously-skip-permissions` (or configure explicit allows);
+  read-only review sessions get by without it, which is why the probe never hit this.
 - Headless `-p` sessions may run **static-only** — in our probe the sandbox blocked
   execution, so the review hand-traced instead of running anything. A review that "ran
   clean" may never have executed a test; read the transcript's own caveats.

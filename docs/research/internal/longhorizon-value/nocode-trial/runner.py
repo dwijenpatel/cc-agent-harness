@@ -165,8 +165,15 @@ class Runner:
         process group so a timeout kills its subagents too."""
         out = os.path.join(self.rundir, f"{label}.json")
         env = dict(os.environ, CLAUDE_CODE_DISABLE_AUTO_MEMORY="1")
+        # Headless -p sessions DENY every permission-gated tool by default
+        # (Write/Edit/Bash/Skill) and still exit 0 — measured live: the first
+        # plan session spent $1.65/533s producing zero files and the words
+        # "grant write access and I'll create all 15 files". The trial repo
+        # is disposable and operator-seeded; full bypass IS its permission
+        # model.
         argv = ["claude", "-p", prompt, "--output-format", "json",
-                "--model", model, "--effort", effort]
+                "--model", model, "--effort", effort,
+                "--dangerously-skip-permissions"]
         print(f"    session {label} ({model}@{effort})", flush=True)
         t0 = time.monotonic()
         proc = subprocess.Popen(argv, cwd=self.repo, text=True, env=env,
@@ -202,6 +209,15 @@ class Runner:
                 "cache_read_tokens": usage.get("cache_read_input_tokens"),
                 "cache_creation_tokens": usage.get("cache_creation_input_tokens"),
             })
+            # Structured field, not prose: denials mean the session could not
+            # act. Surface loudly (telemetry + stderr); control flow stays
+            # git-state-only, so a wedged session still halts via the
+            # no-commit / missing-artifact guards, now with a visible why.
+            denials = j.get("permission_denials") or []
+            if denials:
+                record["permission_denials"] = len(denials)
+                print(f"    WARNING: {label} had {len(denials)} permission "
+                      f"denials (see {out})", file=sys.stderr, flush=True)
         except (json.JSONDecodeError, AttributeError, TypeError):
             record["stats"] = "unparsed (see archived json)"
         self.ledger(record)
@@ -325,7 +341,13 @@ class Runner:
             self.claude("plan", PLAN_PROMPT.format(plan=self.args.plan),
                         self.args.escalate_model, self.args.escalate_effort)
             self.commit_dirty("plan: specs + task manifest")
+            if not os.path.exists(manifest):
+                raise Halt("plan session completed but wrote no tasks.json — "
+                           f"check permission_denials and the result tail in "
+                           f"{self.rundir}/plan.json")
             self.ledger({"stage": "planned", "base": base, "sha": head(self.repo)})
+        if not os.path.exists(manifest):
+            raise Halt(f"no tasks.json at {manifest} (was --skip-plan intended?)")
         tasks = json.load(open(manifest, encoding="utf-8"))
         for t in tasks:
             if not (t.get("id") and t.get("spec") and t.get("checks")):

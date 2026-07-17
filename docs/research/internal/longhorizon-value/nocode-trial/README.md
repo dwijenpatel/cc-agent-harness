@@ -31,15 +31,18 @@ prose-review pass ([/plan-review](../../../../../.claude/skills/plan-review/SKIL
 over the same specs before any implementation:
 
 ```sh
-# plan once, halt at the fork point
-python3 runner.py --repo ~/repos/eaitl-nocode --plan design-draft.md --stop-after-plan --yes
-# fork — cp -R carries .runner/ (the ledger), so both arms resume from identical state
-cp -R ~/repos/eaitl-nocode ~/repos/eaitl-nocode-A
-cp -R ~/repos/eaitl-nocode ~/repos/eaitl-nocode-B
-# arm A: straight to implementation          # arm B: /plan-review --fix first
-python3 runner.py --repo ~/repos/eaitl-nocode-A --yes
+# &&-chained ON PURPOSE: if the plan stage fails, nothing forks and no arm
+# re-plans on its own — a planless fork would silently break the shared-plan
+# premise (measured live on the first kickoff attempt).
+python3 runner.py --repo ~/repos/eaitl-nocode --plan design-draft.md --stop-after-plan --yes && \
+cp -R ~/repos/eaitl-nocode ~/repos/eaitl-nocode-A && \
+cp -R ~/repos/eaitl-nocode ~/repos/eaitl-nocode-B && \
+python3 runner.py --repo ~/repos/eaitl-nocode-A --yes && \
 python3 runner.py --repo ~/repos/eaitl-nocode-B --plan-review --yes
 ```
+The fork (`cp -R`) carries `.runner/` — the ledger — so both arms resume from the
+identical post-plan state: arm A goes straight to implementation, arm B runs
+`/plan-review --fix` first.
 
 Arm B installs the canonical skill (outrigger `.claude/skills/plan-review/`) into the
 trial repo for one session and uninstalls it after, so its task-phase tree differs from
@@ -74,6 +77,13 @@ CLAUDE.md in the seed step; the planner is told to write one only if absent.
 
 Defaults: implement = Sonnet 5 @ xhigh, review/simplify/escalate/plan = Opus 4.8 @ xhigh
 (per-session `--model` and `--effort` flags; auto-memory disabled so fresh means fresh).
+Sessions run with `--dangerously-skip-permissions`: headless `-p` denies every
+permission-gated tool by default *and still exits 0* (measured: the first live plan
+session spent $1.65/533s and wrote nothing) — the disposable, operator-seeded trial repo
+is the permission boundary here. Denials, if any still occur, are surfaced as a stderr
+WARNING and a `permission_denials` count on the session's ledger record; control flow
+stays git-state-only (a session that couldn't act halts via the no-commit and
+missing-artifact guards).
 **Per-session telemetry is first-class**: every session appends a ledger record with
 model, effort, runner-measured wall_s, cost_usd, num_turns, api_s, and the four token
 counts (best-effort parse — a stats hiccup never affects control flow); the full raw JSON

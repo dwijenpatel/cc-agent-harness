@@ -138,13 +138,46 @@ sibling); the nearest readable analogues are brainstorming (above) and feature-d
 clarify phase. The eaitl-nocode-interactive experiment is the first live cell of exactly
 this pipeline.
 
-## 6. Not yet surveyable / next steps
+## 6. The cowork plugins — surveyed 2026-07-17 (UPDATE)
 
-- **App-directory plugins** ("Engineering" by Anthropic, "product manager", anything else
-  installed via the desktop app): content materializes only in app sessions. To survey:
-  open one desktop-app session with the plugin active, then read
-  `~/Library/Application Support/Claude/local-agent-mode-sessions/…/skills/`, or name the
-  plugin's public repo.
+An app session materialized the full fleet under `…/local-agent-mode-sessions/…/rpm/`
+(proper plugin structures incl. `.claude-plugin/plugin.json`): product-management 1.2.0,
+engineering 1.2.0, operations 1.3.0, finance 1.3.0, productivity 1.3.0, pdf-viewer, exa,
+datarobot-agent-skills, cowork-plugin-management. **Global CLI availability solved via a
+local marketplace mirror**: `~/.claude/cowork-mirror/` (marketplace `cowork-mirror`,
+version-stamped copies — the app's rpm cache is session-scoped and not stable), then
+`claude plugin install product-management@cowork-mirror` + `engineering@cowork-mirror`,
+both user scope. Re-mirror on app plugin updates; switch to the official source if
+Anthropic ever publishes these to the CLI marketplace.
+
+- **product-management:write-spec** — the PRD generator. Conversational context-gathering
+  (explicitly not all-questions-at-once); PRD = Problem / Goals (outcomes, not outputs) /
+  **Non-Goals with rationale** (scope-creep prevention) / User Stories (INVEST, common
+  mistakes list) / Requirements as P0/P1/P2 with **P2s as architectural insurance** /
+  Success Metrics (leading vs lagging, specific targets + measurement method) / **Open
+  Questions tagged with owner + blocking vs non-blocking** / Timeline. Acceptance criteria
+  in Given/When/Then, "independently testable", "include what should NOT happen (negative
+  test cases)", "avoid ambiguous words — define concretely". Product-layer only: behavior
+  language, no module paths or machine-runnable checks — it needs the technical-planning
+  layer below it, which is exactly the composition we want.
+- **product-management:product-brainstorming** — the pre-PRD divergent stage: a sparring
+  partner, not a deliverable generator. Problem exploration (symptoms vs root causes,
+  "what happens if we do nothing"); solution ideation demands **5–7 distinct approaches
+  before evaluating any** incl. one do-the-opposite and one remove-something option;
+  anti-early-convergence. Distinct from (and upstream of) the convergent interview.
+- **engineering** (architecture, system-design, code-review, testing-strategy, tech-debt,
+  debug, …) — advisory frameworks, not execution machinery: ADR format with explicit
+  trade-offs, requirements→high-level→deep-dive→scale→trade-off system-design flow.
+  Useful as prompts/checklists; nothing here displaces the superpowers/our execution
+  pipelines.
+
+**Pipeline slotting (the PRD-first stack, now fully materialized):**
+`product-brainstorming` (diverge) → `write-spec` (PRD: intent, scope fence, P0s, metrics)
+→ technical planning (feature-dev / spec-interview / superpowers:writing-plans) →
+`/plan-review` (adversarial semantics) → execution loop (per-task implement+review+simplify)
+→ independent end oracle. Each stage owns a defect class no other stage catches.
+
+## 7. Remaining / next steps
 - Superpowers' remaining skills (systematic-debugging, dispatching-parallel-agents,
   writing-skills, receiving-code-review) read at skim depth only — deepen on demand.
 - The debugging/worktree/finishing skills likely carry more operational gems (the skim

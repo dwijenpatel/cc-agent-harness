@@ -44,9 +44,13 @@ doc pins none — is itself a trial finding. To force a floor instead, commit yo
 CLAUDE.md in the seed step; the planner is told to write one only if absent.
 
 Defaults: implement = Sonnet 5 @ xhigh, review/simplify/escalate/plan = Opus 4.8 @ xhigh
-(per-session `--model` and `--effort` flags; auto-memory disabled so fresh means fresh). Every
-session's full JSON result (incl. usage) is archived under `.runner/<ts>/` for post-hoc
-cost analysis; ledger records per-task escalation and simplify-revert flags.
+(per-session `--model` and `--effort` flags; auto-memory disabled so fresh means fresh).
+**Per-session telemetry is first-class**: every session appends a ledger record with
+model, effort, runner-measured wall_s, cost_usd, num_turns, api_s, and the four token
+counts (best-effort parse — a stats hiccup never affects control flow); the full raw JSON
+stays archived under `.runner/<ts>/`. Completion (and any halt) prints a spend rollup:
+totals plus a per-`model@effort` split. Ledger also records per-task escalation and
+simplify-revert flags.
 
 Estimated spend at eaitl scale (~10 tasks the planner will likely choose): plan ~$3-5;
 per task ~$5-12 (implement + 1-2 review passes with subagent fan-out + simplify);

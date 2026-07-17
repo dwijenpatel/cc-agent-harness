@@ -33,6 +33,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 
 IMPLEMENT_PROMPT = (
     "Implement {spec} exactly. It is self-contained; do not re-decide anything "
@@ -127,6 +128,7 @@ class Runner:
         argv = ["claude", "-p", prompt, "--output-format", "json",
                 "--model", model, "--effort", effort]
         print(f"    session {label} ({model}@{effort})", flush=True)
+        t0 = time.monotonic()
         proc = subprocess.Popen(argv, cwd=self.repo, text=True, env=env,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                                 stdin=subprocess.DEVNULL, start_new_session=True)
@@ -135,12 +137,34 @@ class Runner:
         except subprocess.TimeoutExpired:
             os.killpg(os.getpgid(proc.pid), 9)
             proc.wait()
-            self.ledger({"stage": "session-timeout", "label": label})
+            self.ledger({"stage": "session-timeout", "label": label,
+                         "model": model, "effort": effort,
+                         "wall_s": round(time.monotonic() - t0, 1)})
             raise Halt(f"session {label} timed out ({self.args.timeout_s}s)")
+        wall_s = round(time.monotonic() - t0, 1)
         with open(out, "w", encoding="utf-8") as fh:
             fh.write(stdout or "")
             if stderr:
                 fh.write("\n--- stderr ---\n" + stderr)
+        # Telemetry record per session (best-effort stats parse — a stats
+        # hiccup must never affect control flow, which stays git-state-only).
+        record = {"stage": "session", "label": label, "model": model,
+                  "effort": effort, "wall_s": wall_s, "exit": proc.returncode}
+        try:
+            j = json.loads(stdout)
+            usage = j.get("usage") or {}
+            record.update({
+                "cost_usd": j.get("total_cost_usd"),
+                "num_turns": j.get("num_turns"),
+                "api_s": round((j.get("duration_api_ms") or 0) / 1000, 1),
+                "input_tokens": usage.get("input_tokens"),
+                "output_tokens": usage.get("output_tokens"),
+                "cache_read_tokens": usage.get("cache_read_input_tokens"),
+                "cache_creation_tokens": usage.get("cache_creation_input_tokens"),
+            })
+        except (json.JSONDecodeError, AttributeError, TypeError):
+            record["stats"] = "unparsed (see archived json)"
+        self.ledger(record)
         if proc.returncode != 0:
             self.ledger({"stage": "session-failed", "label": label,
                          "exit": proc.returncode})
@@ -267,6 +291,30 @@ class Runner:
         self.ledger({"stage": "closure", "sha": head(self.repo)})
         print("RUN COMPLETE — all tasks built, checks green, closure review "
               f"archived under {self.rundir}", flush=True)
+        print(self.spend_summary(), flush=True)
+
+    def spend_summary(self):
+        """Roll up the ledger's session records: count, wall, cost, split by
+        (model, effort). Pure reporting — reads what telemetry recorded."""
+        by_role = {}
+        n = wall = cost = 0
+        if os.path.exists(self.ledger_path):
+            for line in open(self.ledger_path, encoding="utf-8"):
+                r = json.loads(line)
+                if r.get("stage") != "session":
+                    continue
+                n += 1
+                wall += r.get("wall_s") or 0
+                cost += r.get("cost_usd") or 0
+                key = f"{r.get('model')}@{r.get('effort')}"
+                agg = by_role.setdefault(key, [0, 0.0, 0.0])
+                agg[0] += 1
+                agg[1] += r.get("wall_s") or 0
+                agg[2] += r.get("cost_usd") or 0
+        lines = [f"SPEND: {n} sessions, {wall/60:.1f} min wall, ${cost:.2f} total"]
+        for key, (cnt, w, c) in sorted(by_role.items()):
+            lines.append(f"  {key}: {cnt} sessions, {w/60:.1f} min, ${c:.2f}")
+        return "\n".join(lines)
 
 
 def main():
@@ -288,11 +336,13 @@ def main():
         print("This SPENDS QUOTA: one planning session + ~3-5 sessions per "
               "task it plans. Re-run with --yes.", file=sys.stderr)
         return 2
+    runner = Runner(args)
     try:
-        Runner(args).run()
+        runner.run()
         return 0
     except Halt as exc:
         print(f"HALT: {exc}", file=sys.stderr)
+        print(runner.spend_summary(), file=sys.stderr)
         print("State is on the ledger; re-running skips completed tasks.",
               file=sys.stderr)
         return 1

@@ -63,9 +63,8 @@ PLAN_PROMPT = (
 )
 
 
-def sh(argv, cwd, timeout=None, check=False):
-    return subprocess.run(argv, cwd=cwd, timeout=timeout, check=check,
-                          capture_output=True, text=True,
+def sh(argv, cwd):
+    return subprocess.run(argv, cwd=cwd, capture_output=True, text=True,
                           stdin=subprocess.DEVNULL)
 
 
@@ -82,8 +81,9 @@ def commit_all(repo, msg):
     sh(["git", "commit", "-q", "-m", msg], repo)
 
 
-def clean_tree(repo):
-    sh(["git", "reset", "--hard", "-q"], repo)
+def reset_clean(repo, ref="HEAD"):
+    """The one spelling of 'discard everything back to ref'."""
+    sh(["git", "reset", "--hard", ref, "-q"], repo)
     sh(["git", "clean", "-fdq"], repo)
 
 
@@ -104,6 +104,8 @@ class Runner:
         record["ts"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
         with open(self.ledger_path, "a", encoding="utf-8") as fh:
             fh.write(json.dumps(record) + "\n")
+            fh.flush()
+            os.fsync(fh.fileno())  # resume-correctness rides on the last record
 
     def done_tasks(self):
         done = set()
@@ -116,23 +118,29 @@ class Runner:
 
     def claude(self, label, prompt, model, effort):
         """One fresh headless session. Only exit code and git state are used
-        for control flow; the full JSON result (incl. usage) is archived."""
+        for control flow; the full JSON result (incl. usage) is archived.
+        Effort travels as the launcher-verified --effort flag; auto-memory is
+        off so 'fresh session' means fresh; the session runs in its own
+        process group so a timeout kills its subagents too."""
         out = os.path.join(self.rundir, f"{label}.json")
-        env = dict(os.environ, CLAUDE_CODE_EFFORT_LEVEL=effort)
+        env = dict(os.environ, CLAUDE_CODE_DISABLE_AUTO_MEMORY="1")
         argv = ["claude", "-p", prompt, "--output-format", "json",
-                "--model", model]
+                "--model", model, "--effort", effort]
         print(f"    session {label} ({model}@{effort})", flush=True)
+        proc = subprocess.Popen(argv, cwd=self.repo, text=True, env=env,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                stdin=subprocess.DEVNULL, start_new_session=True)
         try:
-            proc = subprocess.run(argv, cwd=self.repo, text=True, env=env,
-                                  capture_output=True, stdin=subprocess.DEVNULL,
-                                  timeout=self.args.timeout_s)
+            stdout, stderr = proc.communicate(timeout=self.args.timeout_s)
         except subprocess.TimeoutExpired:
+            os.killpg(os.getpgid(proc.pid), 9)
+            proc.wait()
             self.ledger({"stage": "session-timeout", "label": label})
             raise Halt(f"session {label} timed out ({self.args.timeout_s}s)")
         with open(out, "w", encoding="utf-8") as fh:
-            fh.write(proc.stdout or "")
-            if proc.stderr:
-                fh.write("\n--- stderr ---\n" + proc.stderr)
+            fh.write(stdout or "")
+            if stderr:
+                fh.write("\n--- stderr ---\n" + stderr)
         if proc.returncode != 0:
             self.ledger({"stage": "session-failed", "label": label,
                          "exit": proc.returncode})
@@ -147,61 +155,70 @@ class Runner:
                 return cmd, (r.stdout + r.stderr)[-800:]
         return None, None
 
+    def commit_dirty(self, msg):
+        """Commit whatever a session left uncommitted; True if anything was."""
+        if dirty(self.repo):
+            commit_all(self.repo, msg)
+            return True
+        return False
+
     def review_fix_cycle(self, task, tier_label, review_range):
-        """/code-review --fix passes until clean; dirty tree after a pass =
-        findings were applied. Returns number of dirty passes (churn meter)."""
-        churn = 0
+        """/code-review --fix passes until one leaves the tree clean.
+        True = still churning after the pass budget (the escalation signal)."""
         for n in range(1, self.args.max_review_passes + 1):
             self.claude(f"{task['id']}-review-{tier_label}-{n}",
                         f"/code-review {self.args.review_effort} --fix {review_range}",
                         self.args.review_model, self.args.review_effort)
             if not dirty(self.repo):
-                break
-            churn = n
+                return False
             commit_all(self.repo, f"review-fix pass {n} ({task['id']})")
-        return churn
+        return True
 
     def build_task(self, task):
         pre = head(self.repo)
-        clean_tree(self.repo)
+        reset_clean(self.repo)
         rng = f"{pre}...HEAD"
+        impl_prompt = IMPLEMENT_PROMPT.format(spec=task["spec"],
+                                              checks="; ".join(task["checks"]))
 
-        self.claude(f"{task['id']}-implement",
-                    IMPLEMENT_PROMPT.format(spec=task["spec"],
-                                            checks="; ".join(task["checks"])),
-                    self.args.implement_model, self.args.implement_effort)
-        if head(self.repo) == pre and not dirty(self.repo):
-            raise Halt(f"{task['id']}: implement session produced no commit")
-        if dirty(self.repo):
-            commit_all(self.repo, f"implement ({task['id']}) [runner-committed leftovers]")
-
-        churn = self.review_fix_cycle(task, "t1", rng)
+        # One attempt loop over escalation tiers — the guards exist once, so
+        # the tiers cannot drift apart.
+        tiers = [("t1", self.args.implement_model, self.args.implement_effort),
+                 ("t2", self.args.escalate_model, self.args.escalate_effort)]
         escalated = False
-        if churn >= self.args.max_review_passes:
-            escalated = True
-            self.ledger({"stage": "escalate", "task": task["id"],
-                         "reason": f"review still applying fixes after "
-                                   f"{churn} passes"})
-            sh(["git", "reset", "--hard", pre, "-q"], self.repo)
-            clean_tree(self.repo)
-            self.claude(f"{task['id']}-implement-escalated",
-                        IMPLEMENT_PROMPT.format(spec=task["spec"],
-                                                checks="; ".join(task["checks"])),
-                        self.args.escalate_model, self.args.escalate_effort)
-            churn2 = self.review_fix_cycle(task, "t2", rng)
-            if churn2 >= self.args.max_review_passes:
-                raise Halt(f"{task['id']}: still churning after escalation — "
-                           "operator judgment needed")
+        for i, (label, model, effort) in enumerate(tiers):
+            if i:
+                escalated = True
+                self.ledger({"stage": "escalate", "task": task["id"],
+                             "reason": "review still applying fixes after "
+                                       f"{self.args.max_review_passes} passes"})
+                reset_clean(self.repo, pre)
+            self.claude(f"{task['id']}-implement-{label}", impl_prompt,
+                        model, effort)
+            committed = self.commit_dirty(
+                f"implement ({task['id']}) [runner-committed leftovers]")
+            if head(self.repo) == pre and not committed:
+                raise Halt(f"{task['id']}: implement session produced no commit")
+            if not self.review_fix_cycle(task, label, rng):
+                break
+        else:
+            raise Halt(f"{task['id']}: still churning after escalation — "
+                       "operator judgment needed")
+
+        # Gate before spending the simplify session (closure's own fail-fast
+        # pattern): a red tree here is a contract breach, not simplify's job.
+        failed, tail = self.run_checks(task["checks"])
+        if failed:
+            raise Halt(f"{task['id']}: checks red before simplify: {failed}\n{tail}")
 
         pre_simplify = head(self.repo)
         self.claude(f"{task['id']}-simplify", f"/simplify {rng}",
                     self.args.review_model, self.args.review_effort)
-        if dirty(self.repo):
-            commit_all(self.repo, f"simplify ({task['id']})")
+        self.commit_dirty(f"simplify ({task['id']})")
         failed, tail = self.run_checks(task["checks"])
         simplify_reverted = False
-        if failed and head(self.repo) != pre_simplify:
-            sh(["git", "reset", "--hard", pre_simplify, "-q"], self.repo)
+        if failed:
+            reset_clean(self.repo, pre_simplify)
             simplify_reverted = True
             failed, tail = self.run_checks(task["checks"])
         if failed:
@@ -219,8 +236,7 @@ class Runner:
             base = head(self.repo)
             self.claude("plan", PLAN_PROMPT.format(plan=self.args.plan),
                         self.args.escalate_model, self.args.escalate_effort)
-            if dirty(self.repo):
-                commit_all(self.repo, "plan: specs + task manifest")
+            self.commit_dirty("plan: specs + task manifest")
             self.ledger({"stage": "planned", "base": base, "sha": head(self.repo)})
         tasks = json.load(open(manifest, encoding="utf-8"))
         for t in tasks:
@@ -238,8 +254,11 @@ class Runner:
             print(f"=== task: {t['id']}", flush=True)
             self.build_task(t)
 
+        seen = set()
         for t in tasks:
-            failed, tail = self.run_checks(t["checks"])
+            fresh = [c for c in t["checks"] if c not in seen]
+            seen.update(fresh)
+            failed, tail = self.run_checks(fresh)
             if failed:
                 raise Halt(f"closure: {t['id']} checks red: {failed}\n{tail}")
         self.claude("closure-review",

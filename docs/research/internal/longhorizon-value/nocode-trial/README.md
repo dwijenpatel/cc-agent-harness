@@ -44,7 +44,7 @@ doc pins none — is itself a trial finding. To force a floor instead, commit yo
 CLAUDE.md in the seed step; the planner is told to write one only if absent.
 
 Defaults: implement = Sonnet 5 @ xhigh, review/simplify/escalate/plan = Opus 4.8 @ xhigh
-(effort via `CLAUDE_CODE_EFFORT_LEVEL`, model via `--model` — both per-session). Every
+(per-session `--model` and `--effort` flags; auto-memory disabled so fresh means fresh). Every
 session's full JSON result (incl. usage) is archived under `.runner/<ts>/` for post-hoc
 cost analysis; ledger records per-task escalation and simplify-revert flags.
 

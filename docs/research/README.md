@@ -320,6 +320,33 @@ Corrections produced by the fact-check passes, kept so future readers don't re-i
   not a control) stands, now phrased "failed to reduce" in the gaming ledger,
   distilled/external.md, and the grading method's teaching example.
 
+- The four 2026-07-16 correction entries from the auto-research corpus's own ledger,
+  copied verbatim below (the summary entry above paraphrases the first three; the
+  fourth — the seed-mining miscite — had not been ported; the corpus's external
+  holdings now live in the evidence lake, `~/repos/evidence-lake`, as of 2026-07-20):
+  - back-ledgered 2026-07-20 from auto-research-corpus: **2026-07-16 — kissing-number
+    attribution struck.** The seed doc credited "11-D 593 →
+    594→604" to arXiv 2511.13391; that paper improves dimensions 25–31 and itself cites 11-D
+    at AlphaEvolve's 593. The 594 traces to EinsteinArena with no verified primary; 604 is
+    unsupported. (systems §3; caught by the source-fidelity lens.)
+  - back-ledgered 2026-07-20 from auto-research-corpus: **2026-07-16 — OpenEvolve
+    "reproduced within 0.04%" reframed.** The number pair is
+    faithful to OpenEvolve's README (2.6343 vs 2.635), but the framing conflated: 2.6343 is
+    OpenEvolve's *self-reported* result sitting at the prior best-known level; later
+    self-reports exceed 2.635; nothing third-party verified. (systems §3; replication lens,
+    adjudicated with the methodology lens.)
+  - back-ledgered 2026-07-20 from auto-research-corpus: **2026-07-16 — STOP direction
+    claim corrected.** "Warning made sandbox-disabling slightly
+    more frequent" read noise as signal — 42 vs 46 events in 10,000 is statistically
+    indistinguishable. Now: "failed to reduce" `{within-noise}`. The against-interest
+    existence point (warnings are not a control) stands. (systems §1, eval-integrity §1;
+    methodology lens. Also ported to the evidence-kit's GRADING.md teaching example.)
+  - back-ledgered 2026-07-20 from auto-research-corpus: **2026-07-16 — seed-mining
+    companion thread miscited.** Discussion #428 ("create more
+    entropy") is about random-token creativity, not seed-mining; struck. The independent
+    observers are #285 (carasuca) and #131 (marcelotournier). (systems §1; replication
+    lens.)
+
 **Absence-of-feature findings** (strong, but inherently harder to prove than a positive): Kiro
 closure gate; Spec Kit automated final gate; LangGraph built-in critic; any published
 mutation-canary-calibration of an LLM review panel; a dedicated Claude Code quota CLI (issue

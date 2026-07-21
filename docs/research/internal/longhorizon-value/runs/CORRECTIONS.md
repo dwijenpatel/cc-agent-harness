@@ -1,3 +1,10 @@
+---
+type: Corrections Ledger
+title: "Corrections ledger"
+description: "Corrections ledger for the long-horizon value experiment runs (arm freeze-return nesting bug and related fixes), never deleted."
+timestamp: 2026-07-17
+---
+
 # Corrections ledger
 
 ## 2026-07-17 — the "confirm-nesting defect in all three arms" was a MIS-ATTRIBUTION

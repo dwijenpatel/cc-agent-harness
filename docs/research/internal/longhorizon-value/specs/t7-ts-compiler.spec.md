@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t7-ts-compiler — human-readable render"
+description: "Add a TypeScript code generator to eaitl as `compile_ts(ir) -> str`, returning a standalone, zero-import, erasable-syntax ES-module TypeScript source (embedded SHA-256/UTF-8 helpers; no @types packages, no package.json) that type-checks und"
+timestamp: 2026-07-16
+---
+
 # t7-ts-compiler — human-readable render
 
 > **GENERATED from `t7-ts-compiler.plan.json` — do not edit.** The plan JSON is the

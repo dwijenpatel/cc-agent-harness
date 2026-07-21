@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Review-arm probe — can Opus-as-reviewer catch what Opus-as-implementer missed?"
+description: "Target: arm N's product diff `a129bad...d393126`. Two cells, `/code-review xhigh"
+timestamp: 2026-07-17
+---
+
 # Review-arm probe — can Opus-as-reviewer catch what Opus-as-implementer missed?
 
 Target: arm N's product diff `a129bad...d393126`. Two cells, `/code-review xhigh`

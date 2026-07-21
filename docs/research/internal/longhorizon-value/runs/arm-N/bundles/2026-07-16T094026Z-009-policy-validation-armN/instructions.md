@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `policy-validation`: Advisory policy warnings over a well-formed plan"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `policy-validation`: Advisory policy warnings over a well-formed plan"
+timestamp: 2026-07-16
+---
+
 You are the IMPLEMENTER for task `policy-validation`: Advisory policy warnings over a well-formed plan
 
 SPEC:

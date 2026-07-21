@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t6-python-compiler — human-readable render"
+description: "Add a Python code generator to eaitl as `compile_python(ir) -> str`, returning the source of a standalone stdlib-only module defining transform(rows) -> (output_rows, errors) whose observable behavior is exactly apply_ir's with the plan bak"
+timestamp: 2026-07-16
+---
+
 # t6-python-compiler — human-readable render
 
 > **GENERATED from `t6-python-compiler.plan.json` — do not edit.** The plan JSON is the

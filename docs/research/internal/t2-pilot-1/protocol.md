@@ -1,3 +1,10 @@
+---
+type: Protocol
+title: "T2 Pilot 1 — harness vs. null: pre-registered protocol"
+description: "T2 Pilot 1 pre-registered protocol: harness vs. null comparison, registered 2026-07-12 with the registration anchored before running."
+timestamp: 2026-07-12
+---
+
 # T2 Pilot 1 — harness vs. null: pre-registered protocol
 
 **Status: REGISTERED — AMENDED to shadow mode (Amendment 1, same-day, pre-data), not yet

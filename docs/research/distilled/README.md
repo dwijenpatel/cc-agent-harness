@@ -1,3 +1,10 @@
+---
+type: Distilled Index
+title: "Distilled evidence — the grading method"
+description: "The grading method: warrant x decay, why [official] is not [true], why an admission against interest beats a benchmark, and what Tier A does and does not license."
+timestamp: 2026-07-04
+---
+
 # Distilled evidence — the grading method
 
 The corpus tags every claim with *how it was established* (`[official]`, `[measured]`,

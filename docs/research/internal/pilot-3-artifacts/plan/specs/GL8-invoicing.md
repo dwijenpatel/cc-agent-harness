@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL8-invoicing — batch invoice engine + invoice lifecycle"
+description: "greenlane (multi-tenant landscaping SaaS; FastAPI + Jinja2 + SQLAlchemy)."
+timestamp: 2026-07-14
+---
+
 # GL8-invoicing — batch invoice engine + invoice lifecycle
 
 ## Context

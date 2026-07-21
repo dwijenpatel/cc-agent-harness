@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are a smoke-probe worker. Do these steps IN ORDER and write a file named"
+description: "Worker-bundle instructions — You are a smoke-probe worker. Do these steps IN ORDER and write a file named"
+timestamp: 2026-07-13
+---
+
 You are a smoke-probe worker. Do these steps IN ORDER and write a file named
 probe-report.txt in your working directory with EXACTLY the numbered report
 lines below (fill in each verdict), then stop:

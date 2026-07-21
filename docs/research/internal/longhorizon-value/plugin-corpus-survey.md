@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Plugin-corpus survey — the user-level plugin fleet, superpowers deep-read"
+description: "Survey of the user-level plugin fleet and a superpowers deep-read, covering the binary built-ins and the Anthropic plugins from a pinned clone."
+timestamp: 2026-07-17
+---
+
 # Plugin-corpus survey — the user-level plugin fleet, superpowers deep-read
 
 **Date:** 2026-07-17. **Companion to** [claude-code-artifacts.md](claude-code-artifacts.md)

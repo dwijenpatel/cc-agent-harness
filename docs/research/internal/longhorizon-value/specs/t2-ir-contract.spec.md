@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t2-ir-contract — human-readable render"
+description: "Add a standalone well-formedness validator for eaitl mapping plans as a new function `validate_ir` in the eaitl package, without changing the committed engine's behavior. `validate_ir` takes any object and returns a list of problems (an emp"
+timestamp: 2026-07-15
+---
+
 # t2-ir-contract — human-readable render
 
 > **GENERATED from `t2-ir-contract.plan.json` — do not edit.** The plan JSON is the

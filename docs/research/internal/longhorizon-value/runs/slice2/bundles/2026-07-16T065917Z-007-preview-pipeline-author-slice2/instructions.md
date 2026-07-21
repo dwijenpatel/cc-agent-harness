@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the TEST-AUTHOR for task `preview-pipeline`."
+description: "Worker-bundle instructions — You are the TEST-AUTHOR for task `preview-pipeline`."
+timestamp: 2026-07-16
+---
+
 You are the TEST-AUTHOR for task `preview-pipeline`.
 
 Your authoring workspace is: /Users/dwijen/repos/eaitl-heldout-slice2/preview-pipeline

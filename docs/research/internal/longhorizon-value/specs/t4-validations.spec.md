@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t4-validations — human-readable render"
+description: "Add execution of a mapping plan's output validations to eaitl as a new pure function `validate_output(ir, rows)` that checks the plan's `validations` entries (not_null, type_check) against already-produced output rows and returns a determin"
+timestamp: 2026-07-16
+---
+
 # t4-validations — human-readable render
 
 > **GENERATED from `t4-validations.plan.json` — do not edit.** The plan JSON is the

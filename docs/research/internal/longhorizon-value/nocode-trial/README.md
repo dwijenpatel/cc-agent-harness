@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "nocode-trial — design doc → built-ins → code, walk-away"
+description: "The trial: `[design-plan.md] → [Claude Code built-ins] → output code`, unattended."
+timestamp: 2026-07-16
+---
+
 # nocode-trial — design doc → built-ins → code, walk-away
 
 The trial: `[design-plan.md] → [Claude Code built-ins] → output code`, unattended.

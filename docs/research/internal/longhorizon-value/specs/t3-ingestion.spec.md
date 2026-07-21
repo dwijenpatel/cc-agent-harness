@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t3-ingestion — human-readable render"
+description: "Add source introspection to eaitl as a new pure function `introspect_source(text, fmt)` that parses raw CSV or JSON content and returns {schema, samples}: an ordered field list with one inferred type per field (vocabulary: string/int/float/"
+timestamp: 2026-07-15
+---
+
 # t3-ingestion — human-readable render
 
 > **GENERATED from `t3-ingestion.plan.json` — do not edit.** The plan JSON is the

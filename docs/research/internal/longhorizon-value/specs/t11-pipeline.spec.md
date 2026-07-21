@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t11-pipeline — human-readable render"
+description: "Add the job pipeline to eaitl as run_job(text, fmt, target_schema, target_examples=None) -> job record: the six ratified stages (introspect, propose, validate, confirm, compile, preview) run in pinned order as one pure deterministic state m"
+timestamp: 2026-07-16
+---
+
 # t11-pipeline — human-readable render
 
 > **GENERATED from `t11-pipeline.plan.json` — do not edit.** The plan JSON is the

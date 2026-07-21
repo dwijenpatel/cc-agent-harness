@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL1-scaffold — app skeleton, DB wiring, health route, test rig"
+description: "You are building the first slice of **greenlane**, a multi-tenant SaaS web app"
+timestamp: 2026-07-14
+---
+
 # GL1-scaffold — app skeleton, DB wiring, health route, test rig
 
 ## Context

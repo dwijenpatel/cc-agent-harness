@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "eaitl long-horizon chain — task-sequence design (REGISTERED)"
+description: "Registered task-sequence design (substrate) for the long-horizon value experiment testing whether outrigger gives reliable unattended multi-task runs."
+timestamp: 2026-07-16
+---
+
 # eaitl long-horizon chain — task-sequence design (REGISTERED)
 
 Substrate for the long-horizon value experiment (thesis: outrigger gives reliable
@@ -126,7 +133,7 @@ stop; arm F swaps the implementer tier. Per-task costs recorded from Claude Code
 
 ## Error-compounding — an explicit measured outcome (2026-07-14)
 
-The 2026-07-14 failure-attribution pass ([failure-modes](../../external/failure-modes/README.md))
+The 2026-07-14 failure-attribution pass (`lake:ai/failure-modes/README.md @ 7e3c45f`)
 ranks error-compounding the **largest, best-replicated** long-horizon failure, and flags the
 **decomposition bet** — that short, fresh-context, per-link-gated tasks beat the same effort run
 long — as measured by *no external source*. This chain is the in-house instrument for the gating

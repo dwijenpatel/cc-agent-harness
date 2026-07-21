@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `preview-pipeline`: Compose introspection and the engine into a bounded preview"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `preview-pipeline`: Compose introspection and the engine into a bounded preview"
+timestamp: 2026-07-17
+---
+
 You are the IMPLEMENTER for task `preview-pipeline`: Compose introspection and the engine into a bounded preview
 
 SPEC:

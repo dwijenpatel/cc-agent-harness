@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `source-introspect`: Add CSV/JSON source introspection with pinned type inference"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `source-introspect`: Add CSV/JSON source introspection with pinned type inference"
+timestamp: 2026-07-16
+---
+
 You are the IMPLEMENTER for task `source-introspect`: Add CSV/JSON source introspection with pinned type inference
 
 SPEC:

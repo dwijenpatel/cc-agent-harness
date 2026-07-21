@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL9-payments — manual payment recording + collections view"
+description: "greenlane (multi-tenant landscaping SaaS; FastAPI + Jinja2 + SQLAlchemy)."
+timestamp: 2026-07-14
+---
+
 # GL9-payments — manual payment recording + collections view
 
 ## Context

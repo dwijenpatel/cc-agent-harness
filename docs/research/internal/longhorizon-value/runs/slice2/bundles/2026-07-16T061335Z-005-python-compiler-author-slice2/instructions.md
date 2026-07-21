@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the TEST-AUTHOR for task `python-compiler`."
+description: "Worker-bundle instructions — You are the TEST-AUTHOR for task `python-compiler`."
+timestamp: 2026-07-16
+---
+
 You are the TEST-AUTHOR for task `python-compiler`.
 
 Your authoring workspace is: /Users/dwijen/repos/eaitl-heldout-slice2/python-compiler

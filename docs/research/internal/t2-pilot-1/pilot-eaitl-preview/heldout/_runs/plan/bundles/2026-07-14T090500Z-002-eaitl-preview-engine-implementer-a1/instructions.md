@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `eaitl-preview-engine`: Implement the deterministic IR transform/preview engine"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `eaitl-preview-engine`: Implement the deterministic IR transform/preview engine"
+timestamp: 2026-07-14
+---
+
 You are the IMPLEMENTER for task `eaitl-preview-engine`: Implement the deterministic IR transform/preview engine
 
 SPEC:

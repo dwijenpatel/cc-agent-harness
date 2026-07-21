@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Authoring workspace — held-out suite for task `eaitl-preview-engine"
+description: "Authoring workspace for the held-out test suite of task eaitl-preview-engine; the test-author role builds the blind acceptance suite."
+timestamp: 2026-07-14
+---
+
 # Authoring workspace — held-out suite for task `eaitl-preview-engine`
 
 You are the TEST-AUTHOR for exactly one task. Full role instructions:

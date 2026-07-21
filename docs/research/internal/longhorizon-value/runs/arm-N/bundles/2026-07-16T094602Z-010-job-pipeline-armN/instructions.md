@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `job-pipeline`: Compose the six ratified stages into one deterministic job"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `job-pipeline`: Compose the six ratified stages into one deterministic job"
+timestamp: 2026-07-16
+---
+
 You are the IMPLEMENTER for task `job-pipeline`: Compose the six ratified stages into one deterministic job
 
 SPEC:

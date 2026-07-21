@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL4-customers-properties — customer & property CRUD (owner-only)"
+description: "greenlane (multi-tenant landscaping SaaS; FastAPI + Jinja2 + SQLAlchemy)."
+timestamp: 2026-07-14
+---
+
 # GL4-customers-properties — customer & property CRUD (owner-only)
 
 ## Context

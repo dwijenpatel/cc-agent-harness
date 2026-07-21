@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "greenlane-pilot3-v2 — firing digest (Leg 2: GL2-only, PAUSED at operator direction)"
+description: "Clean-paused 2026-07-06T00:17Z at a task boundary (operator chose 'clean-pause +"
+timestamp: 2026-07-06
+---
+
 # greenlane-pilot3-v2 — firing digest (Leg 2: GL2-only, PAUSED at operator direction)
 
 Clean-paused 2026-07-06T00:17Z at a task boundary (operator chose "clean-pause +

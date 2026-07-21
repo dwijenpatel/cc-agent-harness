@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Pilot firing #1 — live observations ledger"
+description: "Friction, failures, and defects observed during the first real firing"
+timestamp: 2026-07-04
+---
+
 # Pilot firing #1 — live observations ledger
 
 Friction, failures, and defects observed during the first real firing

@@ -1,3 +1,10 @@
+---
+type: Corpus
+title: "Research corpus — index"
+description: "Primary-sourced research behind the harness design"
+timestamp: 2026-07-03
+---
+
 # Research corpus — index
 
 Primary-sourced research behind the harness design
@@ -56,19 +63,19 @@ three-lens adversarial verification (source-fidelity, methodology/regime-fit,
 independent-replication; ≥2/3 refutes kill; 0 killed, 5 single-lens number corrections) —
 adjudicating the root causes and effect sizes of long-horizon coding-agent failure against the
 top-level README's claims, adding the fifteenth subtopic folder
-([external/failure-modes/](external/failure-modes/README.md)) with a committed machine-readable
+(`lake:ai/failure-modes/README.md @ 7e3c45f`) with a committed machine-readable
 verification record. An **Anthropic long-running-agents ingestion (2026-07-16)** ran four Opus
 4.8 agents (dual-fetch post reads, a complete-file code study of `anthropics/cwc-long-running-agents`
 at a pinned SHA, a 9-search reception scan) over the vendor's five-artifact harness family and
 its independent reception — producing
-[external/landscape/anthropic-long-running-agents.md](external/landscape/anthropic-long-running-agents.md),
+`lake:ai/harness-landscape/anthropic-long-running-agents.md @ 7e3c45f`,
 extending the implementer-can-edit-its-judge census to 13/13, and surfacing two independent
 measured papers (physicist-supervised oracle-gaming, arXiv 2605.30353; Harness-Bench's 21.6pp
 harness-choice spread, arXiv 2605.27922). An **auto-research retrieval pass (2026-07-15)** — four Opus 4.8 agents
 mirroring the primary artifacts of Karpathy's `autoresearch`, NVIDIA's ENPIRE, and AlphaEvolve's
 2026 developments (product GA, the 67-problem math repo, the matmul-novelty dispute), plus a
 landscape sweep, ahead of the 2026-07-18 AGI House auto-research summit — added
-[external/self-improvement/auto-research-systems-2026-07.md](external/self-improvement/auto-research-systems-2026-07.md)
+`lake:ai/systems/auto-research-systems-2026-07.md @ 7e3c45f`
 with three gaming-ledger additions; retrieval-grade verification only (no adversarial panel), so
 nothing from it entered distilled/.
 
@@ -79,7 +86,7 @@ determines how much weight a claim can carry:
 
 | Directory | What's in it | How to weigh it |
 |---|---|---|
-| **[external/](external/)** | Vendor documentation, peer-reviewed and preprint literature, other people's systems and repos — **organized into 15 harness-design subtopic folders**, each with its own scoped README, holdings, and open questions. | We did not run these experiments. Strongest when independently replicated or when a source concedes something against its own interest; weakest when a party benchmarks its own product. |
+| **the evidence lake** (`~/repos/evidence-lake`, `ai/`) | Vendor documentation, peer-reviewed and preprint literature, other people's systems and repos — **organized into harness-design subtopic folders** under `lake:ai/`, each with its own scoped README, holdings, and open questions (moved out of this repo's `external/` in the 2026-07-20 project-profile conversion). | We did not run these experiments. Strongest when independently replicated or when a source concedes something against its own interest; weakest when a party benchmarks its own product. |
 | **[internal/](internal/)** | Our own pilot firings, our own zero-quota benchmarks, our own committed telemetry. | We ran these — exactly reproducible, and exactly as biased as we are. Our recorded **defects** are strong evidence; our recorded **wins** are not. |
 | **[distilled/](distilled/README.md)** | The highly-reliable subset of both, and the grading method that decides what qualifies. | **Start here.** Everything in it is Tier A; everything else in the corpus is context. |
 
@@ -87,36 +94,46 @@ determines how much weight a claim can carry:
 
 ### External — the world's evidence, by harness-design subtopic
 
-`external/` is organized as a **map of the coding-agent-harness design space**, not of what we
-happened to research first. Each folder's README states its scope, holdings, related material,
-and open questions. Empty-handed folders are deliberate: they mark subproblems the corpus has
-not yet covered, and they are the queue for the next research passes.
+> **2026-07-20 — project-profile conversion (Migration C).** This corpus's `external/` tree
+> was migrated into the shared **evidence lake** (`~/repos/evidence-lake`, `ai/`) and removed
+> from this repo; distilled rows now cite it as `lake:ai/<path> §<section> @ <lake-commit>`
+> (renames from the migration: `external/landscape/` → `lake:ai/harness-landscape/`,
+> `external/landscape/ecosystem-mining/` → `lake:ai/ecosystem-mining/`; the retired
+> auto-research-systems fork now resolves to the canonical `lake:ai/systems/…`). The
+> `external/…` links in the map below became `lake:ai/…` references; the guard
+> (`tests/`, `profile: project`) resolves every one against the lake. External passes are
+> now recorded in the lake's own narrative.
+
+The lake's `ai/` tree is organized as a **map of the coding-agent-harness design space**, not
+of what we happened to research first. Each folder's README states its scope, holdings, related
+material, and open questions. Empty-handed folders are deliberate: they mark subproblems the
+corpus has not yet covered, and they are the queue for the next research passes.
 
 Coverage: **● rich · ◐ moderate · ○ thin (no dedicated document)** — as of 2026-07-14.
 
 | Subtopic | Holdings | Coverage |
 |---|---|---|
-| [validation/](external/validation/README.md) — the correctness floor: blind validation, held-out testing, gates, verifier calibration, leakage theory | correctness-and-verification-evidence; revalidation-reuse-and-leakage | ● |
-| [self-improvement/](external/self-improvement/README.md) — harnesses as the optimized object; the gaming ledger; governance of self-modification | meta-harness-and-self-improving-harnesses | ● |
-| [economics/](external/economics/README.md) — token/quota budgeting, burn forecasting, admission control, parallelism's exchange rate | token-economics-and-scheduling | ● |
-| [landscape/](external/landscape/README.md) — whole-system comparative studies (span every subtopic; the thin folders' best current material lives here) | landscape-and-novelty; zenith-and-meta-zenith; ecosystem-mining/; anthropic-long-running-agents | ● |
-| [platform-facts/](external/platform-facts/README.md) — the vendor substrate: cache, windows, quota surfaces, credits. **Most volatile; recheck on schedule** | claude-code-and-max-plan-facts | ● |
-| [isolation/](external/isolation/README.md) — sandboxing, deny rules, egress, per-role boundaries, documented escapes | isolation-and-sandboxing | ◐ |
-| [routing/](external/routing/README.md) — model/effort selection, task-horizon and difficulty prediction | task-horizon-prediction | ◐ |
-| [unattended-operation/](external/unattended-operation/README.md) — durable state, resume, pause/wake, liveness, supervision | unattended-operation-prior-art | ◐ |
-| [tool-surface/](external/tool-surface/README.md) — interface ergonomics, MCP-vs-CLI, deferred loading, serialization formats | tool-surface-and-format-economics | ◐ |
-| [evaluation/](external/evaluation/README.md) — measuring the machinery itself: paired-arm methodology, variance-aware gates | harness-evaluation-prior-art | ◐ |
-| [memory-and-context/](external/memory-and-context/README.md) — persistent memory, lessons, context engineering, staleness, memory security | memory-architectures-and-benchmarks; memory-for-coding-harnesses | ● |
-| [planning/](external/planning/README.md) — spec elicitation, determinacy, decomposition quality, plan evaluation, re-planning, brownfield | planning-and-decomposition-evidence; spec-determinacy-and-practice; elicitation-protocol-evidence | ● |
-| [orchestration/](external/orchestration/README.md) — topologies, parallel implementation, handoffs, concurrency correctness | multi-agent-orchestration-evidence; concurrency-and-merge-correctness | ● |
-| [human-in-the-loop/](external/human-in-the-loop/README.md) — ratification UX, adjudication latency, approval fatigue, escalation policy, safe autonomy reduction | oversight-and-vigilance-evidence; ratification-and-escalation-design | ● |
-| [failure-modes/](external/failure-modes/README.md) — root-cause attribution & effect sizes for long-horizon failure; the README-claims audit; per-claim verification record | root-causes-and-effect-sizes | ◐ |
+| `lake:ai/validation/README.md @ 7e3c45f` — the correctness floor: blind validation, held-out testing, gates, verifier calibration, leakage theory | correctness-and-verification-evidence; revalidation-reuse-and-leakage | ● |
+| `lake:ai/self-improvement/README.md @ 7e3c45f` — harnesses as the optimized object; the gaming ledger; governance of self-modification | meta-harness-and-self-improving-harnesses | ● |
+| `lake:ai/economics/README.md @ 7e3c45f` — token/quota budgeting, burn forecasting, admission control, parallelism's exchange rate | token-economics-and-scheduling | ● |
+| `lake:ai/harness-landscape/README.md @ 7e3c45f` — whole-system comparative studies (span every subtopic; the thin folders' best current material lives here) | landscape-and-novelty; zenith-and-meta-zenith; ecosystem-mining/; anthropic-long-running-agents | ● |
+| `lake:ai/platform-facts/README.md @ 7e3c45f` — the vendor substrate: cache, windows, quota surfaces, credits. **Most volatile; recheck on schedule** | claude-code-and-max-plan-facts | ● |
+| `lake:ai/isolation/README.md @ 7e3c45f` — sandboxing, deny rules, egress, per-role boundaries, documented escapes | isolation-and-sandboxing | ◐ |
+| `lake:ai/routing/README.md @ 7e3c45f` — model/effort selection, task-horizon and difficulty prediction | task-horizon-prediction | ◐ |
+| `lake:ai/unattended-operation/README.md @ 7e3c45f` — durable state, resume, pause/wake, liveness, supervision | unattended-operation-prior-art | ◐ |
+| `lake:ai/tool-surface/README.md @ 7e3c45f` — interface ergonomics, MCP-vs-CLI, deferred loading, serialization formats | tool-surface-and-format-economics | ◐ |
+| `lake:ai/evaluation/README.md @ 7e3c45f` — measuring the machinery itself: paired-arm methodology, variance-aware gates | harness-evaluation-prior-art | ◐ |
+| `lake:ai/memory-and-context/README.md @ 7e3c45f` — persistent memory, lessons, context engineering, staleness, memory security | memory-architectures-and-benchmarks; memory-for-coding-harnesses | ● |
+| `lake:ai/planning/README.md @ 7e3c45f` — spec elicitation, determinacy, decomposition quality, plan evaluation, re-planning, brownfield | planning-and-decomposition-evidence; spec-determinacy-and-practice; elicitation-protocol-evidence | ● |
+| `lake:ai/orchestration/README.md @ 7e3c45f` — topologies, parallel implementation, handoffs, concurrency correctness | multi-agent-orchestration-evidence; concurrency-and-merge-correctness | ● |
+| `lake:ai/human-in-the-loop/README.md @ 7e3c45f` — ratification UX, adjudication latency, approval fatigue, escalation policy, safe autonomy reduction | oversight-and-vigilance-evidence; ratification-and-escalation-design | ● |
+| `lake:ai/failure-modes/README.md @ 7e3c45f` — root-cause attribution & effect sizes for long-horizon failure; the README-claims audit; per-claim verification record | root-causes-and-effect-sizes | ◐ |
 
 **The sweep is complete.** As of 2026-07-10 all 14 original external subtopics carry a dedicated
 document (five ● were long-standing; memory-and-context, planning, orchestration, and
 human-in-the-loop went thin→rich across 2026-07-10; isolation, routing, unattended-operation,
 tool-surface, and evaluation remain ◐ moderate). A fifteenth subtopic,
-[failure-modes/](external/failure-modes/README.md), entered 2026-07-14 via the
+`lake:ai/failure-modes/README.md @ 7e3c45f`, entered 2026-07-14 via the
 failure-attribution pass. The corpus is now a mapped design space rather than a record of what
 was researched first; the remaining ◐ folders are the natural depth targets, and each rich
 folder's README carries its own measured open questions.
@@ -282,7 +299,7 @@ Corrections produced by the fact-check passes, kept so future readers don't re-i
   regression), neither instance with a complete preserved failure-side chain, still not a rate.
 
 - **From the 2026-07-14 failure-attribution pass** (details in
-  [external/failure-modes/root-causes-and-effect-sizes.md](external/failure-modes/root-causes-and-effect-sizes.md)
+  `lake:ai/failure-modes/root-causes-and-effect-sizes.md @ 7e3c45f`
   §6), five widely-quotable numbers to not re-import: (1) **Ambig-SWE (2502.13069)**
   per-condition digits "17.0%/21.4%" appear nowhere in the paper — Full/Hidden values live
   only in the Fig.-3 bar chart; quote the band (~40%→~20%) or SWE-Bench Pro's replicated
@@ -358,8 +375,8 @@ weighting.
 ladder on this basis.
 
 **From the 2026-07-04 independent-confirmation pass** (kunchenguid claims vs independent
-sources; details in [tool-surface-and-format-economics.md](external/tool-surface/tool-surface-and-format-economics.md)
-and [harness-evaluation-prior-art.md](external/evaluation/harness-evaluation-prior-art.md)):
+sources; details in `lake:ai/tool-surface/tool-surface-and-format-economics.md @ 7e3c45f`
+and `lake:ai/evaluation/harness-evaluation-prior-art.md @ 7e3c45f`):
 
 - **TOON token savings on uniform tabular data:** replicated, but as a **20–40% band vs compact
   JSON**, tokenizer/shape-dependent (author's −37% is the optimistic end); loses to compact
@@ -395,8 +412,8 @@ and [harness-evaluation-prior-art.md](external/evaluation/harness-evaluation-pri
   ≥16% cheating on successful 8h+ runs; Transluce o3 fabrication elicitation).
 
 **From the 2026-07-04 critique-refresh pass** (details in
-[correctness-and-verification-evidence.md §3 addendum, §7](external/validation/correctness-and-verification-evidence.md)
-and [landscape-and-novelty.md §4](external/landscape/landscape-and-novelty.md)):
+`lake:ai/validation/correctness-and-verification-evidence.md @ 7e3c45f`
+and `lake:ai/harness-landscape/landscape-and-novelty.md @ 7e3c45f`):
 
 - **Cross-model error correlation:** two independent academic sources (arXiv 2506.07962, 350+
   models, ~60% same-wrong-answer agreement when both err, correlation rises with capability and
@@ -480,4 +497,4 @@ the TrueFoundry 10× caching case study (single unaudited vendor anecdote, gatew
 - **ENPIRE code release** (promised as of Jun 2026) — on arrival, audit reward-synthesis +
   Stage-2 logs; and re-pull AlphaEvolve's live `status.json` before citing any "current
   record" (both tracked in
-  [external/self-improvement/auto-research-systems-2026-07.md](external/self-improvement/auto-research-systems-2026-07.md)).
+  `lake:ai/systems/auto-research-systems-2026-07.md @ 7e3c45f`).

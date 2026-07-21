@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t10-policy — human-readable render"
+description: "Add policy validation to eaitl as validate_mappings(ir, target_schema=None) -> list of advisory warnings ({code, message, location}, empty = nothing flagged, never raises for warnings): pii_unhashed (pinned 10-token name list, hash-op suppr"
+timestamp: 2026-07-16
+---
+
 # t10-policy — human-readable render
 
 > **GENERATED from `t10-policy.plan.json` — do not edit.** The plan JSON is the

@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Claude Code model speed / effort benchmark (July 2026)"
+description: "Empirical benchmark of the four Claude Code models (Fable 5, Opus 4.8, Sonnet 5, Haiku 4.5): latency, throughput, token-spend variance, correctness, and relative cost per solved task; raw JSONs and harness committed."
+timestamp: 2026-07-05
+---
+
 # Claude Code model speed / effort benchmark (July 2026)
 
 Empirical benchmark of the four models offered in Claude Code — **Fable 5, Opus 4.8,

@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Pilot firing #2 (greenlane) — live observations ledger"
+description: "Friction, failures, and defects observed during the greenlane firing"
+timestamp: 2026-07-05
+---
+
 # Pilot firing #2 (greenlane) — live observations ledger
 
 Friction, failures, and defects observed during the greenlane firing

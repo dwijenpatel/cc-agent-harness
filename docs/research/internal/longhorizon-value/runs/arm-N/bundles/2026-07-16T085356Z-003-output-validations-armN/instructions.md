@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `output-validations`: Execute a plan's output validations (not_null, type_check)"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `output-validations`: Execute a plan's output validations (not_null, type_check)"
+timestamp: 2026-07-16
+---
+
 You are the IMPLEMENTER for task `output-validations`: Execute a plan's output validations (not_null, type_check)
 
 SPEC:

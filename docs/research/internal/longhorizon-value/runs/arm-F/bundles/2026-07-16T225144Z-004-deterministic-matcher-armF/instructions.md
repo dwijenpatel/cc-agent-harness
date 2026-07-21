@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `deterministic-matcher`: Propose mappings deterministically from schemas and examples"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `deterministic-matcher`: Propose mappings deterministically from schemas and examples"
+timestamp: 2026-07-16
+---
+
 You are the IMPLEMENTER for task `deterministic-matcher`: Propose mappings deterministically from schemas and examples
 
 SPEC:

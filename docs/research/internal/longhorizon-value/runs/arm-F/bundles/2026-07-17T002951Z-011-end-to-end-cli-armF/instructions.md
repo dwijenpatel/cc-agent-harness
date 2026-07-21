@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `end-to-end-cli`: One command from source file to generated code and reports"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `end-to-end-cli`: One command from source file to generated code and reports"
+timestamp: 2026-07-17
+---
+
 You are the IMPLEMENTER for task `end-to-end-cli`: One command from source file to generated code and reports
 
 SPEC:

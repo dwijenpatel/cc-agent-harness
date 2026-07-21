@@ -1,0 +1,12 @@
+{
+  "profile": "project",
+  "lake_root": "/Users/dwijen/repos/evidence-lake",
+  "required": [
+    "README.md",
+    "index.md",
+    "distilled/README.md",
+    "distilled/external.md",
+    "distilled/internal.md"
+  ],
+  "min_markdown_files": 80
+}

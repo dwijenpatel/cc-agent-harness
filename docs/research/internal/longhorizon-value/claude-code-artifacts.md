@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Claude Code's code-quality artifacts — survey, extraction, and measured behavior"
+description: "Survey, extraction, and measured behavior of Claude Code's code-quality artifacts across the source clone and the shipped 2.1.207 binary."
+timestamp: 2026-07-16
+---
+
 # Claude Code's code-quality artifacts — survey, extraction, and measured behavior
 
 **Surveyed 2026-07-16/17.** Sources: (a) the public `anthropics/claude-code` repo, local

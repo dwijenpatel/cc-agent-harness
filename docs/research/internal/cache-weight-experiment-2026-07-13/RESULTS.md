@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "T1 run 2 — 2026-07-13 (operator-executed per pre-registered sizing)"
+description: "'Run 2 — pre-registered sizing' section (registered 2026-07-12, before execution). Build"
+timestamp: 2026-07-13
+---
+
 # T1 run 2 — 2026-07-13 (operator-executed per pre-registered sizing)
 
 **Protocol:** [cache-read-quota-weight-experiment.md](../../../../tools/budget-governor/cache-read-quota-weight-experiment.md),

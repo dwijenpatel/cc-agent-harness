@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the TEST-AUTHOR for task `end-to-end-cli`."
+description: "Worker-bundle instructions — You are the TEST-AUTHOR for task `end-to-end-cli`."
+timestamp: 2026-07-16
+---
+
 You are the TEST-AUTHOR for task `end-to-end-cli`.
 
 Your authoring workspace is: /Users/dwijen/repos/eaitl-heldout-slice2/end-to-end-cli

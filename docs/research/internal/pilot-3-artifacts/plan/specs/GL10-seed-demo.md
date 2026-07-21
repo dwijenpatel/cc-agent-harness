@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL10-seed-demo — deterministic demo seed + smoke walkthrough"
+description: "greenlane (multi-tenant landscaping SaaS; FastAPI + Jinja2 + SQLAlchemy +"
+timestamp: 2026-07-14
+---
+
 # GL10-seed-demo — deterministic demo seed + smoke walkthrough
 
 ## Context

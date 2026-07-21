@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t9-freeze — human-readable render"
+description: "Add the mapping freeze to eaitl as confirm_mapping(ir) -> {version, ir}: the SHA-256 hex digest of the plan's canonical JSON form (sort_keys, compact separators, ensure_ascii=False, UTF-8), refusing malformed plans by raising MappingError w"
+timestamp: 2026-07-16
+---
+
 # t9-freeze — human-readable render
 
 > **GENERATED from `t9-freeze.plan.json` — do not edit.** The plan JSON is the

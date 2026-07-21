@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL6-visits-daylists — day lists, visit lifecycle, one-offs, rain-day bulk move"
+description: "greenlane (multi-tenant landscaping SaaS; FastAPI + Jinja2 + SQLAlchemy)."
+timestamp: 2026-07-14
+---
+
 # GL6-visits-daylists — day lists, visit lifecycle, one-offs, rain-day bulk move
 
 ## Context

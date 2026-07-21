@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL2-auth-tenancy — signup, login, sessions, CSRF, tenant scoping"
+description: "greenlane is a **multi-tenant** SaaS for small landscaping companies built on"
+timestamp: 2026-07-14
+---
+
 # GL2-auth-tenancy — signup, login, sessions, CSRF, tenant scoping
 
 ## Context

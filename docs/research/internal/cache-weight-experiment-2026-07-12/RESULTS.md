@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "T1 first run — 2026-07-12 (operator-executed per protocol)"
+description: "T1 first run (2026-07-12), operator-executed per the pre-registered protocol: cache-read window-weight probe, arms and status-line readings in a fresh 5-hour window."
+timestamp: 2026-07-12
+---
+
 # T1 first run — 2026-07-12 (operator-executed per protocol)
 
 > **Superseded on magnitude by [run 2](../cache-weight-experiment-2026-07-13/RESULTS.md)**

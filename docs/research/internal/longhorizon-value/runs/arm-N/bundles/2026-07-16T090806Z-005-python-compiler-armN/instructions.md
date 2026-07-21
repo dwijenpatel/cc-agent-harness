@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `python-compiler`: Compile a mapping plan to a standalone engine-identical Python module"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `python-compiler`: Compile a mapping plan to a standalone engine-identical Python module"
+timestamp: 2026-07-16
+---
+
 You are the IMPLEMENTER for task `python-compiler`: Compile a mapping plan to a standalone engine-identical Python module
 
 SPEC:

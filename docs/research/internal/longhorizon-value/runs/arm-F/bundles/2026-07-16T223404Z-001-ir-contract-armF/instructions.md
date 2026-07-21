@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `ir-contract`: Add a well-formedness validator for mapping plans"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `ir-contract`: Add a well-formedness validator for mapping plans"
+timestamp: 2026-07-16
+---
+
 You are the IMPLEMENTER for task `ir-contract`: Add a well-formedness validator for mapping plans
 
 SPEC:

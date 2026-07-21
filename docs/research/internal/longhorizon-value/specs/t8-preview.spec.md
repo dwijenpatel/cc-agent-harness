@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t8-preview — human-readable render"
+description: "Add the preview pipeline to eaitl as run_preview(text, fmt, ir) -> {preview_rows, errors}: introspect the raw source text, apply the plan to the introspection samples (<=10 rows by construction), and return the engine's output rows and erro"
+timestamp: 2026-07-16
+---
+
 # t8-preview — human-readable render
 
 > **GENERATED from `t8-preview.plan.json` — do not edit.** The plan JSON is the

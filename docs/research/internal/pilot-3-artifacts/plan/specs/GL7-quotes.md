@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL7-quotes — internal quotes with conversion to work"
+description: "greenlane (multi-tenant landscaping SaaS; FastAPI + Jinja2 + SQLAlchemy)."
+timestamp: 2026-07-14
+---
+
 # GL7-quotes — internal quotes with conversion to work
 
 ## Context

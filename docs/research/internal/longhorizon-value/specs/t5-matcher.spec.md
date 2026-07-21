@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t5-matcher — human-readable render"
+description: "Add the deterministic mapping matcher to eaitl as propose_mappings(source_schema, target_schema, samples, target_examples=None) -> IR dict, proposing mappings via a pinned four-lane ladder (exact normalized name; unique containment; example"
+timestamp: 2026-07-16
+---
+
 # t5-matcher — human-readable render
 
 > **GENERATED from `t5-matcher.plan.json` — do not edit.** The plan JSON is the

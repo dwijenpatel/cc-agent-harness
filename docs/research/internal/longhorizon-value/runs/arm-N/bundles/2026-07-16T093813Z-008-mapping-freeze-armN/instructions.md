@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the IMPLEMENTER for task `mapping-freeze`: Content-address an approved plan with a deterministic version"
+description: "Worker-bundle instructions — You are the IMPLEMENTER for task `mapping-freeze`: Content-address an approved plan with a deterministic version"
+timestamp: 2026-07-16
+---
+
 You are the IMPLEMENTER for task `mapping-freeze`: Content-address an approved plan with a deterministic version
 
 SPEC:

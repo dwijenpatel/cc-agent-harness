@@ -1,3 +1,10 @@
+---
+type: Worker Instructions
+title: "You are the TEST-AUTHOR for task `ts-compiler`."
+description: "Worker-bundle instructions — You are the TEST-AUTHOR for task `ts-compiler`."
+timestamp: 2026-07-16
+---
+
 You are the TEST-AUTHOR for task `ts-compiler`.
 
 Your authoring workspace is: /Users/dwijen/repos/eaitl-heldout-slice2/ts-compiler

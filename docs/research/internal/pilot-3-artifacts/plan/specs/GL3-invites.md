@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL3-invites — crew invitations via single-use tokens"
+description: "greenlane (multi-tenant landscaping SaaS; FastAPI + Jinja2 + SQLAlchemy)."
+timestamp: 2026-07-14
+---
+
 # GL3-invites — crew invitations via single-use tokens
 
 ## Context

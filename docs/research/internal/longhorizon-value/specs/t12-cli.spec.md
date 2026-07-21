@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "t12-cli — human-readable render"
+description: "Add the end-to-end CLI to eaitl: python3 -m eaitl run <source> <target_schema> [<target_examples>] --out <dir>, a thin veneer over run_job — parse argv, read only the given files, call the pipeline once, write transform.py / transform.mts /"
+timestamp: 2026-07-16
+---
+
 # t12-cli — human-readable render
 
 > **GENERATED from `t12-cli.plan.json` — do not edit.** The plan JSON is the

@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Pilot firing #3 (greenlane, same-plan protocol) — observations"
+description: "Fired 2026-07-05 on I14–I18 machinery with the byte-identical pilot-2 plan"
+timestamp: 2026-07-05
+---
+
 # Pilot firing #3 (greenlane, same-plan protocol) — observations
 
 Fired 2026-07-05 on I14–I18 machinery with the byte-identical pilot-2 plan

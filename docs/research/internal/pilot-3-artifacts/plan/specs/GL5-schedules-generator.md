@@ -1,3 +1,10 @@
+---
+type: Spec
+title: "GL5-schedules-generator — recurring schedules + idempotent visit generator"
+description: "greenlane (multi-tenant landscaping SaaS; FastAPI + Jinja2 + SQLAlchemy)."
+timestamp: 2026-07-14
+---
+
 # GL5-schedules-generator — recurring schedules + idempotent visit generator
 
 ## Context

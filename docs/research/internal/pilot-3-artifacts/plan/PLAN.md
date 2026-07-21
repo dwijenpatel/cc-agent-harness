@@ -1,3 +1,10 @@
+---
+type: Plan
+title: "greenlane — plan (pilot #2)"
+description: "Field-service SaaS for small landscaping companies (owner-operator to ~3 crews)."
+timestamp: 2026-07-04
+---
+
 # greenlane — plan (pilot #2)
 
 Field-service SaaS for small landscaping companies (owner-operator to ~3 crews).

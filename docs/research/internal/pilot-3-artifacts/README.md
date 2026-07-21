@@ -1,3 +1,10 @@
+---
+type: Internal Evidence
+title: "Pilot-3 artifacts — the P3v2-5 evidence set, salvaged"
+description: "The salvaged P3v2-5 evidence set: the three Opus verdicts, gate stamp, gate report, held-out corpus, vault-side pass log, and replay meter for the design's central thesis."
+timestamp: 2026-07-11
+---
+
 # Pilot-3 artifacts — the P3v2-5 evidence set, salvaged
 
 **Salvaged 2026-07-11** from the pilot-3 clone (`repos/cc-agent-harness-test1/`, HEAD `a638acf`)

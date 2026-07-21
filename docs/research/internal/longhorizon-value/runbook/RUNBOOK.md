@@ -1,3 +1,10 @@
+---
+type: Runbook
+title: "Long-horizon value experiment — operator runbook"
+description: "Everything here is prepared so that starting the experiment is **one command per arm**."
+timestamp: 2026-07-16
+---
+
 # Long-horizon value experiment — operator runbook
 
 Everything here is prepared so that starting the experiment is **one command per arm**.

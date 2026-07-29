@@ -597,7 +597,7 @@ decision leans on it. Import the *mechanism*, never the *effect size*.
 
 ## 12. Meta-harness and self-improvement (research vocabulary)
 
-From [research/meta-harness-and-self-improving-harnesses.md](research/external/self-improvement/meta-harness-and-self-improving-harnesses.md).
+From [research/meta-harness-and-self-improving-harnesses.md](../../evidence-lake/ai/self-improvement/meta-harness-and-self-improving-harnesses.md).
 
 - **Harness** — "the system surrounding a base model that orchestrates execution and decides how
   the model thinks and plans, calls tools and acts, perceives and manages context, stores
@@ -641,9 +641,9 @@ From [research/meta-harness-and-self-improving-harnesses.md](research/external/s
 
 ## 13. Named external systems
 
-Compact one-liners. Full treatment in [research/landscape-and-novelty.md](research/external/landscape/landscape-and-novelty.md),
-[research/zenith-and-meta-zenith.md](research/external/landscape/zenith-and-meta-zenith.md), and
-[research/ecosystem-mining/](research/external/landscape/ecosystem-mining/README.md).
+Compact one-liners. Full treatment in [research/landscape-and-novelty.md](../../evidence-lake/ai/harness-landscape/landscape-and-novelty.md),
+[research/zenith-and-meta-zenith.md](../../evidence-lake/ai/harness-landscape/zenith-and-meta-zenith.md), and
+[research/ecosystem-mining/](../../evidence-lake/ai/ecosystem-mining/README.md).
 
 **Agents & frameworks:** **Kiro** (AWS; requirements→design→tasks in EARS syntax + approval
 gates) · **GitHub Spec Kit** (spec→plan→tasks→implement + a "constitution") · **Devin** (Cognition;

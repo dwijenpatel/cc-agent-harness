@@ -14,7 +14,7 @@ emitting a `plan.json` (contract v1) the operator ratifies. The skill body is
   clarification recovers most (distilled §3.1 — three independent benchmarks). Real token
   budget here.
 - **But questions route by owner** (2026-07-15, Provisional —
-  [elicitation-protocol-evidence](../../../docs/research/external/planning/elicitation-protocol-evidence.md)):
+  [elicitation-protocol-evidence](../../../../evidence-lake/ai/planning/elicitation-protocol-evidence.md)):
   the winning ask-policies are few/early/consolidated/calibrated; omission (not ambiguity) is
   the dominant requirements-defect class, so the product-boundary taxonomy runs as a coverage
   checklist (asked or sourced, never skipped); craft decisions are derived

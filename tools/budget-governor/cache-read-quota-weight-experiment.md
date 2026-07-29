@@ -6,7 +6,7 @@ D12) — the highest-value single measurement available *(originally design-v1 �
 question #2; that document is now in [the attic](../../docs/attic/token-time-optimized-harness.md))*:
 does a cache-read token count against the Max-plan 5-hour/weekly windows at a discount (API
 billing rate is ~10% of fresh input) or at near-full weight (what community telemetry —
-[claude-code-and-max-plan-facts.md](../../docs/research/external/platform-facts/claude-code-and-max-plan-facts.md)
+[claude-code-and-max-plan-facts.md](../../../evidence-lake/ai/platform-facts/claude-code-and-max-plan-facts.md)
 §4 — suggests)?
 
 **This experiment spends real Max-plan quota.** It is written but **not executed**. Read this
@@ -163,7 +163,7 @@ as a sign the linear model is too simple for a second pass.
      should be, conservatively);
    - [docs/research/distilled/internal.md](../../docs/research/distilled/internal.md) §4 — the
      measurement as A3 (decay `vendor-policy`: re-check on any announced plan change);
-   - [claude-code-and-max-plan-facts.md](../../docs/research/external/platform-facts/claude-code-and-max-plan-facts.md)
+   - [claude-code-and-max-plan-facts.md](../../../evidence-lake/ai/platform-facts/claude-code-and-max-plan-facts.md)
      §4 and [distilled/external.md](../../docs/research/distilled/external.md) §4's "still
      officially unanswered" note — cross-reference the internal measurement (the *official*
      question stays open; we now have our own answer).

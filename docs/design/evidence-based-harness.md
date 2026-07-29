@@ -25,7 +25,7 @@ append-only context discipline takes its named promotion trigger: Provisional �
 Window capacity ≈ 36–48M weighted tok/5h. Decay `vendor-policy`.
 **Seventh amendment, 2026-07-14 (failure-attribution pass — error-compounding named):** an
 88-agent Opus 4.8 deep-research pass on the root causes and effect sizes of long-horizon
-failure ([failure-modes](../research/external/failure-modes/README.md); 20 primary-source claims
+failure ([failure-modes](../../../evidence-lake/ai/failure-modes/README.md); 20 primary-source claims
 through three adversarial lenses, 0 killed / 5 number corrections) lands **+D16** — *bound the
 horizon into short, fresh-context, gated links*, the countermeasure to **error-compounding**,
 the largest and best-replicated long-horizon failure and not previously a named decision. Two
@@ -39,7 +39,7 @@ claim; and attributing compounding to ambiguity rather than to length and self-c
 research-grounded):** the first two live interviews measured the protocol's cost — 14 and 10
 operator turns against a 25-minute unattended execution — and a post-hoc autopsy scored ~0 of
 the second interview's 7 questions as genuinely needing the operator. A four-branch external
-pass ([planning/elicitation-protocol-evidence.md](../research/external/planning/elicitation-protocol-evidence.md))
+pass ([planning/elicitation-protocol-evidence.md](../../../evidence-lake/ai/planning/elicitation-protocol-evidence.md))
 grounds the rewrite: the interviewer acts as tech lead and asks only product-boundary questions
 (a coverage checklist — each item asked or its source named), consolidated and early; craft
 decisions are derived under a three-layer license (conventions → precedent → general
@@ -291,7 +291,7 @@ measure the planted distribution, not the real one (M4). Experiment **T4**.
   clarification-value evidence above says nothing about *who answers which questions*, and the
   first two live interviews spent 14 and 10 operator turns mostly on craft decisions whose
   recommended answers were accepted verbatim. The compressed protocol
-  ([elicitation-protocol-evidence](../research/external/planning/elicitation-protocol-evidence.md)):
+  ([elicitation-protocol-evidence](../../../evidence-lake/ai/planning/elicitation-protocol-evidence.md)):
   the interviewer is the tech lead, the operator the product manager; the operator is asked
   only the product-boundary items — scope/non-goals, use-cases, success, appetite,
   future-scope, irreversibles + risk tier — run as a **coverage checklist** (each item asked
@@ -616,7 +616,7 @@ task builds on it**. A defect that escapes one link is caught at that link or it
 link downstream; the architecture's job is to make "caught at that link" the default.
 
 **Evidence (2026-07-14 failure-attribution pass,
-[failure-modes](../research/external/failure-modes/README.md) — 20 primary-source claims, three
+[failure-modes](../../../evidence-lake/ai/failure-modes/README.md) — 20 primary-source claims, three
 adversarial lenses, 0 killed).** Error-compounding is the **largest, best-replicated, most
 on-regime** failure of long-horizon coding, and it is two mechanisms, each countered here:
 
